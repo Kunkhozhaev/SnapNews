@@ -20,4 +20,7 @@
     <string name="sportsTabItem">Sports</string>
     <string name="technologyTabItem">Technology</string>
     <string name="text_categories">Categories</string>
+    <string name="btnEditProfileText">Edit Profile</string>
+    <string name="tvProfileMail">user@gmail.com</string>
+    <string name="tvProfileName">Name Surname</string>
 </resources>
