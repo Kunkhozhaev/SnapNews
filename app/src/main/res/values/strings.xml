@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">News</string>
+    <string name="article_icon_preview_text">Article icon preview</string>
+    <string name="breaking_news_bottomMenu_title">Breaking News</string>
+    <string name="saved_news_bottomMenu_title">Saved News</string>
+    <string name="profile_bottomMenu_title">Profile</string>
+    <string name="search_news_menu_title">Search News</string>
+    <string name="save_news_button_description">Save news</string>
+    <string name="search_hint_text">Search for news…</string>
+    <string name="source_article_text">SOURCE</string>
+    <string name="title_article_text">TITLE</string>
+    <string name="description_article_text">DESCRIPTION</string>
+    <string name="published_at_article_text">PUBLISHED AT</string>
+    <string name="text_top_news">Top News</string>
+    <string name="businessTabItem">Business</string>
+    <string name="entertainmentTabItem">Entertainment</string>
+    <string name="generalTabItem">General</string>
+    <string name="healthTabItem">Health</string>
+    <string name="scienceTabItem">Science</string>
+    <string name="sportsTabItem">Sports</string>
+    <string name="technologyTabItem">Technology</string>
+    <string name="text_categories">Categories</string>
+</resources>
