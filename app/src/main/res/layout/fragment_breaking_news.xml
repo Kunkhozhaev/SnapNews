@@ -28,7 +28,8 @@
         android:layout_marginBottom="12dp"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:fontFamily="@font/roboto_bold"
+        android:fontFamily="@font/poppins_regular"
+        android:textStyle="bold"
         android:text="@string/text_top_news"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -50,7 +51,8 @@
         android:text="@string/text_categories"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:fontFamily="@font/roboto_bold"
+        android:fontFamily="@font/poppins_regular"
+        android:textStyle="bold"
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"

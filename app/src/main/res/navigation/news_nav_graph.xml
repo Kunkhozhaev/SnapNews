@@ -28,8 +28,9 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
         <action
-            android:id="@+id/action_breakingNewsFragment_to_searchNewsFragment2"
+            android:id="@+id/action_breakingNewsFragment_to_searchNewsFragment"
             app:destination="@id/searchNewsFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
@@ -54,5 +55,14 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="ru.nurdaulet.news.ui.fragments.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="ru.nurdaulet.news.ui.fragments.EditProfileFragment"
+        android:label="EditProfileFragment" />
+<!--    <action android:id="@+id/action_global_editProfileFragment" app:destination="@id/editProfileFragment"/>-->
 </navigation>

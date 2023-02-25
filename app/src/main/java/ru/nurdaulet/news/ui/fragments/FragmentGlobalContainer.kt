@@ -14,7 +14,7 @@ import ru.nurdaulet.news.databinding.FragmentProfileInfoBinding
 import ru.nurdaulet.news.ui.NewsActivity
 import ru.nurdaulet.news.ui.NewsViewModel
 
-class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
+class FragmentGlobalContainer : Fragment(R.layout.fragment_profile_info) {
 
     lateinit var viewModel: NewsViewModel
     private val args: ArticleFragmentArgs by navArgs()
@@ -37,18 +37,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*navHostFragment = requireActivity().supportFragmentManager
-            .findFragmentById(R.id.newsNavHostFragment) as NavHostFragment*/
-
-        binding.btnEditProfile.setOnClickListener {
-            /*requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.newsNavHostFragment, fragmentToEdit)
-                .commit()*/
-            Toast.makeText(requireContext(), "I am fucking clicked", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment())
-        }
-
-        viewModel = (activity as NewsActivity).viewModel
     }
 
     override fun onDestroyView() {

@@ -51,7 +51,7 @@ class NewsActivity : AppCompatActivity() {
         when(item.itemId) {
             R.id.searchingNewsFragment -> navHostFragment.findNavController()
                 .navigate(
-                    BreakingNewsFragmentDirections.actionBreakingNewsFragmentToSearchNewsFragment2()
+                    BreakingNewsFragmentDirections.actionBreakingNewsFragmentToSearchNewsFragment()
                 )
             else -> Toast.makeText(this, "nothing", Toast.LENGTH_SHORT).show()
         }

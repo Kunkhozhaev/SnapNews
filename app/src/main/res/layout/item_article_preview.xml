@@ -43,7 +43,8 @@
                     android:text="@string/title_article_text"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
-                    android:fontFamily="@font/roboto_bold"/>
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_regular"/>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
