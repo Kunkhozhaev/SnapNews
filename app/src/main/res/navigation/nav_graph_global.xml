@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/news_nav_graph">
+    android:id="@+id/news_nav_graph"
+    app:startDestination="@id/fragmentGlobalContainer">
 
+    <fragment
+        android:id="@+id/fragmentGlobalContainer"
+        android:name="ru.nurdaulet.news.ui.fragments.FragmentGlobalContainer"
+        android:label="FragmentGlobalContainer" >
+        <action
+            android:id="@+id/action_fragmentGlobalContainer_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_fragmentGlobalContainer_to_searchNewsFragment"
+            app:destination="@id/searchNewsFragment" />
+        <action
+            android:id="@+id/action_fragmentGlobalContainer_to_articleFragment"
+            app:destination="@id/articleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="ru.nurdaulet.news.ui.fragments.EditProfileFragment"
+        android:label="EditProfileFragment" />
+    <fragment
+        android:id="@+id/searchNewsFragment"
+        android:name="ru.nurdaulet.news.ui.fragments.SearchNewsFragment"
+        android:label="SearchNewsFragment" >
+        <action
+            android:id="@+id/action_searchNewsFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="ru.nurdaulet.news.ui.fragments.ArticleFragment"
+        android:label="ArticleFragment" >
+        <argument
+            android:name="article"
+            app:argType="ru.nurdaulet.news.domain.models.Article" />
+    </fragment>
 </navigation>

@@ -4,38 +4,41 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.ui.setupWithNavController
 import ru.nurdaulet.news.R
-import ru.nurdaulet.news.databinding.FragmentProfileInfoBinding
-import ru.nurdaulet.news.ui.NewsActivity
-import ru.nurdaulet.news.ui.NewsViewModel
+import ru.nurdaulet.news.databinding.FragmentGlobalContainerBinding
 
-class FragmentGlobalContainer : Fragment(R.layout.fragment_profile_info) {
+class FragmentGlobalContainer : Fragment(R.layout.fragment_global_container) {
 
-    lateinit var viewModel: NewsViewModel
-    private val args: ArticleFragmentArgs by navArgs()
-    lateinit var navHostFragment: NavHostFragment
+    private lateinit var navController: NavController
 
-    private var _binding: FragmentProfileInfoBinding? = null
-    private val binding: FragmentProfileInfoBinding
+    private var _binding: FragmentGlobalContainerBinding? = null
+
+    private val binding: FragmentGlobalContainerBinding
         get() = _binding ?: throw RuntimeException("binding == null")
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfileInfoBinding.inflate(inflater, container, false)
+        _binding = FragmentGlobalContainerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        /*navHostFragment = requireActivity().supportFragmentManager
+            .findFragmentById(R.id.fragmentContainerView) as NavHostFragment*/
+        /*val navController = navHostFragment.navController
+        binding.bottomNavigationView.setupWithNavController(navController)*/
+
+        navController = Navigation.findNavController(requireActivity(), R.id.fragmentContainerView)
+        binding.bottomNavigationView.setupWithNavController(navController)
 
     }
 
@@ -43,8 +46,4 @@ class FragmentGlobalContainer : Fragment(R.layout.fragment_profile_info) {
         super.onDestroyView()
         _binding = null
     }
-/*
-    companion object {
-        val fragmentToEdit = EditProfileFragment()
-    }*/
 }

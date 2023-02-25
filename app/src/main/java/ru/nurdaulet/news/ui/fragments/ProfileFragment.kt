@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.databinding.FragmentProfileInfoBinding
 import ru.nurdaulet.news.ui.NewsActivity
@@ -17,8 +15,8 @@ import ru.nurdaulet.news.ui.NewsViewModel
 class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
 
     lateinit var viewModel: NewsViewModel
-    private val args: ArticleFragmentArgs by navArgs()
-    lateinit var navHostFragment: NavHostFragment
+
+    private lateinit var parentNavController: NavController
 
     private var _binding: FragmentProfileInfoBinding? = null
     private val binding: FragmentProfileInfoBinding
@@ -37,15 +35,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*navHostFragment = requireActivity().supportFragmentManager
-            .findFragmentById(R.id.newsNavHostFragment) as NavHostFragment*/
-
         binding.btnEditProfile.setOnClickListener {
-            /*requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.newsNavHostFragment, fragmentToEdit)
-                .commit()*/
-            Toast.makeText(requireContext(), "I am fucking clicked", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment())
+            parentNavController = (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
+            parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_editProfileFragment)
+            //findNavController().navigate(R.id.action_fragmentGlobalContainer_to_editProfileFragment)
         }
 
         viewModel = (activity as NewsActivity).viewModel
@@ -55,8 +48,4 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
         super.onDestroyView()
         _binding = null
     }
-/*
-    companion object {
-        val fragmentToEdit = EditProfileFragment()
-    }*/
 }

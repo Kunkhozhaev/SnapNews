@@ -5,64 +5,21 @@
     app:startDestination="@id/breakingNewsFragment">
 
     <fragment
-        android:id="@+id/searchNewsFragment"
-        android:name="ru.nurdaulet.news.ui.fragments.SearchNewsFragment"
-        android:label="SearchNewsFragment">
-        <action
-            android:id="@+id/action_searchNewsFragment_to_articleFragment"
-            app:destination="@id/articleFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-    </fragment>
-    <fragment
         android:id="@+id/breakingNewsFragment"
         android:name="ru.nurdaulet.news.ui.fragments.BreakingNewsFragment"
-        android:label="BreakingNewsFragment" >
-        <action
-            android:id="@+id/action_breakingNewsFragment_to_articleFragment"
-            app:destination="@id/articleFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-        <action
-            android:id="@+id/action_breakingNewsFragment_to_searchNewsFragment"
-            app:destination="@id/searchNewsFragment" />
-
-    </fragment>
-    <fragment
-        android:id="@+id/articleFragment"
-        android:name="ru.nurdaulet.news.ui.fragments.ArticleFragment"
-        android:label="ArticleFragment" >
-        <argument
-            android:name="article"
-            app:argType="ru.nurdaulet.news.domain.models.Article" />
-    </fragment>
+        android:label="BreakingNewsFragment" />
     <fragment
         android:id="@+id/savedNewsFragment"
         android:name="ru.nurdaulet.news.ui.fragments.SavedNewsFragment"
-        android:label="SavedNewsFragment" >
-        <action
-            android:id="@+id/action_savedNewsFragment_to_articleFragment"
-            app:destination="@id/articleFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-    </fragment>
+        android:label="SavedNewsFragment" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="ru.nurdaulet.news.ui.fragments.ProfileFragment"
         android:label="ProfileFragment" >
-        <action
-            android:id="@+id/action_profileFragment_to_editProfileFragment"
-            app:destination="@id/editProfileFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/editProfileFragment"
-        android:name="ru.nurdaulet.news.ui.fragments.EditProfileFragment"
-        android:label="EditProfileFragment" />
-<!--    <action android:id="@+id/action_global_editProfileFragment" app:destination="@id/editProfileFragment"/>-->
+<!--
+    app:enterAnim="@anim/slide_in_right"
+    app:exitAnim="@anim/slide_out_left"
+    app:popEnterAnim="@anim/slide_in_left"
+    app:popExitAnim="@anim/slide_out_right"-->
 </navigation>

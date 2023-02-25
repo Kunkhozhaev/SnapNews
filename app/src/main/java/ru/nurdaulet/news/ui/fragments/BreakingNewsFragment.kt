@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,8 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     lateinit var viewModel: NewsViewModel
     lateinit var newsAdapter: NewsAdapter
     lateinit var breakingNewsAdapter: BreakingNewsAdapter
+
+    private lateinit var parentNavController: NavController
 
     private var _binding: FragmentBreakingNewsBinding? = null
     private val binding: FragmentBreakingNewsBinding
@@ -47,25 +50,20 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         viewModel = (activity as NewsActivity).viewModel
         setupRecyclerView()
         (activity as NewsActivity).setSupportActionBar(binding.toolbarWidget)
+        parentNavController = (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
 
         breakingNewsAdapter.setOnArticleClickListener { article ->
             val bundle = Bundle().apply {
                 putSerializable("article", article)
             }
-            findNavController().navigate(
-                R.id.action_breakingNewsFragment_to_articleFragment,
-                bundle
-            )
+            parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_articleFragment, bundle)
         }
 
         newsAdapter.setOnArticleClickListener { article ->
             val bundle = Bundle().apply {
                 putSerializable("article", article)
             }
-            findNavController().navigate(
-                R.id.action_breakingNewsFragment_to_articleFragment,
-                bundle
-            )
+            parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_articleFragment, bundle)
         }
 
         viewModel.breakingNews.observe(viewLifecycleOwner) { response ->

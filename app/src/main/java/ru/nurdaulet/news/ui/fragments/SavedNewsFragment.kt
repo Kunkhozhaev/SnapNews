@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,8 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
     lateinit var viewModel: NewsViewModel
     lateinit var newsAdapter: NewsAdapter
+
+    private lateinit var parentNavController: NavController
 
     private var _binding: FragmentSavedNewsBinding? = null
     private val binding: FragmentSavedNewsBinding
@@ -40,14 +43,13 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         viewModel = (activity as NewsActivity).viewModel
         setupRecyclerView()
 
+        parentNavController = (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
+
         newsAdapter.setOnArticleClickListener { article ->
             val bundle = Bundle().apply {
                 putSerializable("article", article)
             }
-            findNavController().navigate(
-                R.id.action_savedNewsFragment_to_articleFragment,
-                bundle
-            )
+            parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_articleFragment, bundle)
         }
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
