@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.databinding.FragmentEditProfileBinding
@@ -25,6 +26,10 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.ivConfirmEditBtn.setOnClickListener {
+            Toast.makeText(requireActivity(), "Profile saved", Toast.LENGTH_SHORT).show()
+        }
 
     }
 

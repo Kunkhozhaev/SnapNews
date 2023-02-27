@@ -49,8 +49,11 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
         viewModel = (activity as NewsActivity).viewModel
         setupRecyclerView()
-        (activity as NewsActivity).setSupportActionBar(binding.toolbarWidget)
         parentNavController = (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
+
+        binding.ivSearchBtn.setOnClickListener {
+            parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_searchNewsFragment)
+        }
 
         breakingNewsAdapter.setOnArticleClickListener { article ->
             val bundle = Bundle().apply {

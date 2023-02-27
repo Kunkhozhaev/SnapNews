@@ -44,11 +44,9 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
             loadUrl(article.url)
         }
 
-        binding.fab.setOnClickListener {
+        binding.ivSaveBtn.setOnClickListener {
             viewModel.saveArticle(article)
-            Snackbar.make(view, "Article saved successfully", Snackbar.LENGTH_SHORT)
-                .setAnchorView(R.id.bottomNavigationView)
-                .show()
+            Snackbar.make(view, "Article saved successfully", Snackbar.LENGTH_SHORT).show()
         }
 
     }

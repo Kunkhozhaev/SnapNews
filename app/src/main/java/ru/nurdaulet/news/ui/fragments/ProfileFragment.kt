@@ -38,7 +38,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
         binding.btnEditProfile.setOnClickListener {
             parentNavController = (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
             parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_editProfileFragment)
-            //findNavController().navigate(R.id.action_fragmentGlobalContainer_to_editProfileFragment)
         }
 
         viewModel = (activity as NewsActivity).viewModel

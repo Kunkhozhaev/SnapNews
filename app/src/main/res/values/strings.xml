@@ -23,4 +23,9 @@
     <string name="btnEditProfileText">Edit Profile</string>
     <string name="tvProfileMail">user@gmail.com</string>
     <string name="tvProfileName">Nurdaulet Kunkhozhaev</string>
+    <string name="tvEditProfilePageTitle">Edit Profile</string>
+    <string name="tvEditPageInfoTitle">Your information</string>
+    <string name="tvEditPageNameTitle">First Name</string>
+    <string name="tvEditPageSurnameTitle">Last name</string>
+    <string name="tvEditPageEmailTitle">e-mail</string>
 </resources>
