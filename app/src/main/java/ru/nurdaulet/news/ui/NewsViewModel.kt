@@ -44,9 +44,10 @@ class NewsViewModel(
         safeSearchNewsCall(searchQuery, paginate)
     }
 
-    fun getCategoryNews(countryCode: String, category: Int, paginate: Boolean) = viewModelScope.launch {
-        safeCategoryNewsCall(countryCode, category, paginate)
-    }
+    fun getCategoryNews(countryCode: String, category: Int, paginate: Boolean) =
+        viewModelScope.launch {
+            safeCategoryNewsCall(countryCode, category, paginate)
+        }
 
     private fun handleBreakingNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
         if (response.isSuccessful) {
@@ -69,10 +70,13 @@ class NewsViewModel(
         return Resource.Error(response.message())
     }
 
-    private fun handleCategoryNewsResponse(response: Response<NewsResponse>, paginate: Boolean): Resource<NewsResponse> {
+    private fun handleCategoryNewsResponse(
+        response: Response<NewsResponse>,
+        paginate: Boolean
+    ): Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                if (paginate){
+                if (paginate) {
                     categoryNewsPage++
                     if (categoryNewsResponse == null) {
                         categoryNewsResponse = resultResponse
@@ -94,7 +98,10 @@ class NewsViewModel(
         return Resource.Error(response.message())
     }
 
-    private fun handleSearchNewsResponse(response: Response<NewsResponse>, paginate: Boolean): Resource<NewsResponse> {
+    private fun handleSearchNewsResponse(
+        response: Response<NewsResponse>,
+        paginate: Boolean
+    ): Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 if (paginate) {
@@ -146,12 +153,20 @@ class NewsViewModel(
         }
     }
 
-    private suspend fun safeCategoryNewsCall(countryCode: String, category: Int, paginate: Boolean) {
+    private suspend fun safeCategoryNewsCall(
+        countryCode: String,
+        category: Int,
+        paginate: Boolean
+    ) {
         categoryNews.postValue(Resource.Loading())
         try {
             if (hasInternetConnection()) {
                 val response =
-                    newsRepository.getCategoryNews(countryCode, listOfCategories[category], categoryNewsPage)
+                    newsRepository.getCategoryNews(
+                        countryCode,
+                        listOfCategories[category],
+                        categoryNewsPage
+                    )
                 categoryNews.postValue(handleCategoryNewsResponse(response, paginate))
             } else {
                 categoryNews.postValue(Resource.Error("No internet connection"))

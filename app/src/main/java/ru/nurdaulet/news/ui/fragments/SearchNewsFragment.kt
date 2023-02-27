@@ -41,32 +41,23 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel = (activity as NewsActivity).viewModel
         setupRecyclerView()
+        setupSearchNewsObserve()
 
         newsAdapter.setOnArticleClickListener { article ->
             val bundle = Bundle().apply {
                 putSerializable("article", article)
             }
-
             findNavController().navigate(
                 R.id.action_searchNewsFragment_to_articleFragment,
                 bundle
             )
         }
-
-        /*var job: Job? = null
-        binding.etSearch.addTextChangedListener { editable ->
-            job?.cancel()
-            job = MainScope().launch {
-                delay(SEARCH_NEWS_TIME_DELAY)
-                editable?.let {
-                    if (it.toString().isNotEmpty()) {
-                        viewModel.searchNews(it.toString())
-                    }
-                }
-            }
-        }*/
+        binding.iconBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
         binding.artSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
@@ -76,13 +67,12 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                 if (query != null) {
                     viewModel.searchNews(query, false)
                 }
-                /*else {
-                    viewModel.searchNews("Rocket League", false)
-                }*/
                 return false
             }
         })
+    }
 
+    private fun setupSearchNewsObserve() {
         viewModel.searchNews.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
@@ -110,21 +100,12 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         }
     }
 
-    private fun hideProgressBar() {
-        binding.paginationProgressBar.visibility = View.INVISIBLE
-        isLoading = false
-    }
-
-    private fun showProgressBar() {
-        binding.paginationProgressBar.visibility = View.VISIBLE
-        isLoading = true
-    }
-
-    var isLoading = false
-    var isLastPage = false
-    var isScrolling = false
+    private var isLoading = false
+    private var isLastPage = false
+    private var isScrolling = false
 
     private val searchArticlesScrollListener = object : RecyclerView.OnScrollListener() {
+        //TODO Interface class of scroll listener
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
@@ -162,6 +143,16 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(searchArticlesScrollListener)
         }
+    }
+
+    private fun hideProgressBar() {
+        binding.paginationProgressBar.visibility = View.INVISIBLE
+        isLoading = false
+    }
+
+    private fun showProgressBar() {
+        binding.paginationProgressBar.visibility = View.VISIBLE
+        isLoading = true
     }
 
     override fun onDestroyView() {

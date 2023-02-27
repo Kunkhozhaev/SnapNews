@@ -12,22 +12,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ru.nurdaulet.news.R
-import ru.nurdaulet.news.ui.adapters.NewsAdapter
 import ru.nurdaulet.news.databinding.FragmentSavedNewsBinding
 import ru.nurdaulet.news.ui.NewsActivity
 import ru.nurdaulet.news.ui.NewsViewModel
+import ru.nurdaulet.news.ui.adapters.NewsAdapter
 
 class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
     lateinit var viewModel: NewsViewModel
     lateinit var newsAdapter: NewsAdapter
-
     private lateinit var parentNavController: NavController
 
     private var _binding: FragmentSavedNewsBinding? = null
     private val binding: FragmentSavedNewsBinding
         get() = _binding ?: throw RuntimeException("binding == null")
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,18 +38,26 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = (activity as NewsActivity).viewModel
-        setupRecyclerView()
 
-        parentNavController = (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
+        viewModel = (activity as NewsActivity).viewModel
+        parentNavController =
+            (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
+        setupRecyclerView()
+        onSwipeListener(view)
+        setupGetSavedNewsObserve()
 
         newsAdapter.setOnArticleClickListener { article ->
             val bundle = Bundle().apply {
                 putSerializable("article", article)
             }
-            parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_articleFragment, bundle)
+            parentNavController.navigate(
+                R.id.action_fragmentGlobalContainer_to_articleFragment,
+                bundle
+            )
         }
+    }
 
+    private fun onSwipeListener(view: View) {
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -81,7 +87,9 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         ItemTouchHelper(itemTouchHelperCallback).apply {
             attachToRecyclerView(binding.rvSavedNews)
         }
+    }
 
+    private fun setupGetSavedNewsObserve() {
         viewModel.getSavedNews().observe(viewLifecycleOwner) { articles ->
             val distinctArticles = articles.distinctBy {
                 it.title

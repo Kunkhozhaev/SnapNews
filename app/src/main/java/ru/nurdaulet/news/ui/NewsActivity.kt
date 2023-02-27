@@ -19,29 +19,9 @@ class NewsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        /*val customToolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarWidget)
-        setSupportActionBar(customToolbar)*/
 
         val newsRepository = NewsRepository(ArticleDatabase(this))
         val viewModelProviderFactory = NewsViewModelProviderFactory(application, newsRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory)[NewsViewModel::class.java]
     }
-
-   /* override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when(item.itemId) {
-            R.id.searchingNewsFragment -> Toast.makeText(this, "blabla", Toast.LENGTH_SHORT).show()
-                *//*navHostFragment.findNavController()
-                .navigate(
-                    BreakingNewsFragmentDirections.actionBreakingNewsFragmentToSearchNewsFragment()
-                )*//*
-            else -> Toast.makeText(this, "nothing", Toast.LENGTH_SHORT).show()
-        }
-        return false
-    }*/
 }
