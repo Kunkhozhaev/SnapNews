@@ -4,17 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivProfileBackground"
         android:layout_width="match_parent"
-        android:layout_height="168dp"
+        android:layout_height="192dp"
         android:scaleType="centerCrop"
         app:shapeAppearanceOverlay="@style/ivRoundedProfileBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/edit_profile_fon" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        android:layout_marginTop="-36dp"
+        android:padding="2dp"
+        app:strokeWidth="2dp"
+        android:src="@drawable/no_profile_picture"
+        app:layout_constraintBottom_toTopOf="@+id/tvFullName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfileBackground"
+        app:shapeAppearanceOverlay="@style/circleImageView"
+        app:strokeColor="@android:color/darker_gray" />
 
     <TextView
         android:id="@+id/tvFullName"
@@ -27,7 +41,7 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivProfileBackground" />
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
 
     <TextView
         android:id="@+id/tvUserMail"
@@ -44,14 +58,15 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnEditProfile"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:background="@drawable/bg_edit_profile_btn"
         android:drawableStart="@drawable/ic_profile"
-        android:gravity="center|left"
-        android:padding="8dp"
+        android:drawablePadding="4dp"
+        android:gravity="center|start"
+        android:paddingStart="4dp"
+        android:paddingEnd="12dp"
         android:layout_marginTop="36dp"
         android:textColor="@color/white"
-        android:paddingEnd="16dp"
         android:text="@string/btnEditProfileText"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"

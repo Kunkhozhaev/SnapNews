@@ -22,8 +22,9 @@
                 android:id="@+id/icon_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="12dp"
                 android:src="@drawable/ic_arrow_back"
+                android:background="@drawable/bg_circle_button_tints"
                 android:backgroundTint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,23 +49,47 @@
                 android:id="@+id/ivConfirmEditBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="12dp"
                 android:src="@drawable/ic_confirm_btn"
                 android:backgroundTint="@color/white"
+                android:background="@drawable/bg_circle_button_tints"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        android:padding="2dp"
+        app:strokeWidth="2dp"
+        android:src="@drawable/no_profile_picture"
+        app:layout_constraintBottom_toTopOf="@+id/tvFullName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar"
+        app:shapeAppearanceOverlay="@style/circleImageView"
+        app:strokeColor="@android:color/darker_gray" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/icUploadPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-4dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/bg_circle_add_photo"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_add_photo"
+        app:layout_constraintBottom_toBottomOf="@+id/profilePicture"
+        app:layout_constraintEnd_toEndOf="@+id/profilePicture" />
 
     <TextView
         android:id="@+id/tvFullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/poppins_regular"
         android:text="@string/tvProfileName"
         android:textColor="@color/black"
@@ -72,7 +97,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar" />
+        app:layout_constraintTop_toBottomOf="@id/profilePicture" />
 
     <TextView
         android:id="@+id/tvUserMail"
@@ -108,7 +133,7 @@
         android:fontFamily="@font/poppins_regular"
         android:text="@string/tvEditPageNameTitle"
         android:textColor="@color/gray"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvYourInformation" />
 
@@ -121,9 +146,9 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_tl_profile_info"
         android:fontFamily="@font/poppins_regular"
-        android:text="Nurdaulet"
+        android:text="@string/tvProfileName"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name_tt" />
 
@@ -133,11 +158,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_regular"
         android:text="@string/tvEditPageSurnameTitle"
         android:textColor="@color/gray"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_name" />
 
@@ -150,9 +175,9 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_tl_profile_info"
         android:fontFamily="@font/poppins_regular"
-        android:text="Kunkhozhaev"
+        android:text="@string/tvProfileName"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/age_tt" />
 
@@ -161,11 +186,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_regular"
         android:text="@string/tvEditPageEmailTitle"
         android:textColor="@color/gray"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_age" />
 
@@ -178,9 +203,9 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_tl_profile_info"
         android:fontFamily="@font/poppins_regular"
-        android:text="nur@gmail.com"
+        android:text="@string/tvProfileMail"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/email_tt" />
 

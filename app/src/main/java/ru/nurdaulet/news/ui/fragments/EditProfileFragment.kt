@@ -35,6 +35,9 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             ivConfirmEditBtn.setOnClickListener {
                 Toast.makeText(requireActivity(), "Profile saved", Toast.LENGTH_SHORT).show()
             }
+            icUploadPicture.setOnClickListener {
+                Toast.makeText(requireActivity(), "Uploaded", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

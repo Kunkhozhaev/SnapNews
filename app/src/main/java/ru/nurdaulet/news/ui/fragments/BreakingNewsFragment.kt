@@ -25,8 +25,8 @@ import ru.nurdaulet.news.util.Resource
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
     lateinit var viewModel: NewsViewModel
-    lateinit var newsAdapter: NewsAdapter
-    lateinit var breakingNewsAdapter: BreakingNewsAdapter
+    private lateinit var newsAdapter: NewsAdapter
+    private lateinit var breakingNewsAdapter: BreakingNewsAdapter
     private lateinit var parentNavController: NavController
     private var tabPosition = 0
 
@@ -76,11 +76,6 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                     hideProgressBar()
                     response.data?.let { topNewsResponse ->
                         breakingNewsAdapter.submitList(topNewsResponse.articles.toList())
-                        /*val totalPages = topNewsResponse.totalResults / QUERY_PAGE_SIZE + PAGE_OFFSET
-                        isLastPage = viewModel.breakingNewsPage == totalPages
-                        if (isLastPage) {
-                            binding.rvBreakingNews.setPadding(0, 0, 0, 0)
-                        }*/
                     }
                 }
                 is Resource.Error -> {
@@ -149,6 +144,16 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     private var isLoading = false
     private var isLastPage = false
     private var isScrolling = false
+
+    /*private val categoryArticlesScrollListener = object : CustomScrollListener(isLoading,isLastPage) {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            if (shouldPaginate) {
+                viewModel.getCategoryNews("it", tabPosition, true)
+                isScrolling = false
+            }
+        }
+    }*/
 
     private val categoryArticlesScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
