@@ -18,6 +18,7 @@ import ru.nurdaulet.news.ui.NewsActivity
 import ru.nurdaulet.news.ui.NewsViewModel
 import ru.nurdaulet.news.ui.adapters.BreakingNewsAdapter
 import ru.nurdaulet.news.ui.adapters.NewsAdapter
+import ru.nurdaulet.news.util.Constants.COUNTRY_CODE
 import ru.nurdaulet.news.util.Constants.PAGE_OFFSET
 import ru.nurdaulet.news.util.Constants.QUERY_PAGE_SIZE
 import ru.nurdaulet.news.util.Resource
@@ -61,7 +62,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
             TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tabPosition = tab?.position ?: 0
-                viewModel.getCategoryNews("it", tabPosition, false)
+                viewModel.getCategoryNews(COUNTRY_CODE, tabPosition, false)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -149,7 +150,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             if (shouldPaginate) {
-                viewModel.getCategoryNews("it", tabPosition, true)
+                viewModel.getCategoryNews(COUNTRY_CODE, tabPosition, true)
                 isScrolling = false
             }
         }
@@ -178,7 +179,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem &&
                     isNotAtBeginning && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
-                viewModel.getCategoryNews("it", tabPosition, true)
+                viewModel.getCategoryNews(COUNTRY_CODE, tabPosition, true)
                 isScrolling = false
             }
         }

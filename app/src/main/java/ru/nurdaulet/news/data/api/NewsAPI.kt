@@ -4,13 +4,14 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 import ru.nurdaulet.news.domain.models.NewsResponse
+import ru.nurdaulet.news.util.Constants.COUNTRY_CODE
 
 interface NewsAPI {
 
     @GET("v2/top-headlines")
     suspend fun getBreakingNews(
         @Query("country")
-        countryCode: String = "uk",
+        countryCode: String = COUNTRY_CODE,
         @Query("page")
         pageNumber: Int = 1,
     ): Response<NewsResponse>
@@ -18,7 +19,7 @@ interface NewsAPI {
     @GET("v2/top-headlines")
     suspend fun getCategoryNews(
         @Query("country")
-        countryCode: String = "uk",
+        countryCode: String = COUNTRY_CODE,
         @Query("category")
         category: String,
         @Query("page")

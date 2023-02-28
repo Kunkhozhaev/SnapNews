@@ -12,6 +12,7 @@ import retrofit2.Response
 import ru.nurdaulet.news.domain.models.Article
 import ru.nurdaulet.news.domain.models.NewsResponse
 import ru.nurdaulet.news.domain.repository.NewsRepository
+import ru.nurdaulet.news.util.Constants.COUNTRY_CODE
 import ru.nurdaulet.news.util.Constants.listOfCategories
 import ru.nurdaulet.news.util.Resource
 import java.io.IOException
@@ -32,8 +33,8 @@ class NewsViewModel(
     var categoryNewsResponse: NewsResponse? = null
 
     init {
-        getBreakingNews("it")
-        getCategoryNews("it", 0, false)
+        getBreakingNews(COUNTRY_CODE)
+        getCategoryNews(COUNTRY_CODE, 0, false)
     }
 
     fun getBreakingNews(countryCode: String) = viewModelScope.launch {
