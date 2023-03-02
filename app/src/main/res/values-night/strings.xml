@@ -2,7 +2,6 @@
 <resources>
     <string name="tvEditProfilePageTitle">Edit Profile</string>
     <string name="tvEditPageInfoTitle">Your information</string>
-    <string name="tvEditPageNameTitle">First Name</string>
-    <string name="tvEditPageSurnameTitle">Last name</string>
+    <string name="tvUsernameText">User Name</string>
     <string name="tvEditPageEmailTitle">e-mail</string>
 </resources>

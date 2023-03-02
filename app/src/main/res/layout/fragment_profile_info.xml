@@ -23,7 +23,7 @@
         android:padding="2dp"
         app:strokeWidth="2dp"
         android:src="@drawable/no_profile_picture"
-        app:layout_constraintBottom_toTopOf="@+id/tvFullName"
+        app:layout_constraintBottom_toTopOf="@+id/tvUserName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivProfileBackground"
@@ -31,7 +31,7 @@
         app:strokeColor="@android:color/darker_gray" />
 
     <TextView
-        android:id="@+id/tvFullName"
+        android:id="@+id/tvUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -53,7 +53,7 @@
         android:textColor="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvFullName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnEditProfile"

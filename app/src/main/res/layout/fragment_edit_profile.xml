@@ -23,9 +23,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:src="@drawable/ic_arrow_back"
                 android:background="@drawable/bg_circle_button_tints"
                 android:backgroundTint="@color/white"
+                android:src="@drawable/ic_arrow_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -33,26 +33,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingTop="4dp"
                 android:text="@string/tvEditProfilePageTitle"
                 android:textColor="@color/black"
-                android:fontFamily="@font/poppins_regular"
-                android:textStyle="bold"
                 android:textSize="24sp"
-                android:paddingTop="4dp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/ivConfirmEditBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:src="@drawable/ic_confirm_btn"
-                android:backgroundTint="@color/white"
                 android:background="@drawable/bg_circle_button_tints"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_confirm_btn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -64,21 +63,21 @@
         android:layout_width="108dp"
         android:layout_height="108dp"
         android:padding="2dp"
-        app:strokeWidth="2dp"
         android:src="@drawable/no_profile_picture"
-        app:layout_constraintBottom_toTopOf="@+id/tvFullName"
+        app:layout_constraintBottom_toTopOf="@+id/tvUserName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_bar"
         app:shapeAppearanceOverlay="@style/circleImageView"
-        app:strokeColor="@android:color/darker_gray" />
+        app:strokeColor="@android:color/darker_gray"
+        app:strokeWidth="2dp" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/icUploadPicture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="-4dp"
         android:layout_marginEnd="4dp"
+        android:layout_marginBottom="-4dp"
         android:background="@drawable/bg_circle_add_photo"
         android:backgroundTint="@color/white"
         android:src="@drawable/ic_add_photo"
@@ -86,7 +85,7 @@
         app:layout_constraintEnd_toEndOf="@+id/profilePicture" />
 
     <TextView
-        android:id="@+id/tvFullName"
+        android:id="@+id/tvUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -108,7 +107,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvFullName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
 
     <TextView
         android:id="@+id/tvYourInformation"
@@ -124,90 +123,70 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvUserMail" />
 
-    <TextView
-        android:id="@+id/name_tt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/poppins_regular"
-        android:text="@string/tvEditPageNameTitle"
-        android:textColor="@color/gray"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvYourInformation" />
-
-    <TextView
-        android:id="@+id/user_name"
+    <LinearLayout
+        android:id="@+id/container_auth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_tl_profile_info"
-        android:fontFamily="@font/poppins_regular"
-        android:text="@string/tvProfileName"
-        android:textColor="@color/black"
-        android:textSize="14sp"
+        android:layout_margin="24dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name_tt" />
+        app:layout_constraintTop_toBottomOf="@id/tvYourInformation">
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_full_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/tvUsernameText"
+            app:startIconDrawable="@drawable/ic_profile">
 
-    <TextView
-        android:id="@+id/age_tt"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:enabled="false"
+            android:hint="@string/tvEmailHintMsg"
+            app:startIconDrawable="@drawable/ic_email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/poppins_regular"
-        android:text="@string/tvEditPageSurnameTitle"
-        android:textColor="@color/gray"
-        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_name" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/user_age"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_tl_profile_info"
-        android:fontFamily="@font/poppins_regular"
-        android:text="@string/tvProfileName"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/age_tt" />
-
-    <TextView
-        android:id="@+id/email_tt"
+    <ProgressBar
+        android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/poppins_regular"
-        android:text="@string/tvEditPageEmailTitle"
-        android:textColor="@color/gray"
-        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_age" />
-
-    <TextView
-        android:id="@+id/user_mail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_tl_profile_info"
-        android:fontFamily="@font/poppins_regular"
-        android:text="@string/tvProfileMail"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email_tt" />
+        app:layout_constraintTop_toBottomOf="@id/container_auth" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

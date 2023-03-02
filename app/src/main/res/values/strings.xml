@@ -25,7 +25,17 @@
     <string name="tvProfileName">Nurdaulet Kunkhozhaev</string>
     <string name="tvEditProfilePageTitle">Edit Profile</string>
     <string name="tvEditPageInfoTitle">Your information</string>
-    <string name="tvEditPageNameTitle">First Name</string>
+    <string name="tvUsernameText">User Name</string>
     <string name="tvEditPageSurnameTitle">Last name</string>
     <string name="tvEditPageEmailTitle">e-mail</string>
+    <string name="tvSignInPageTitleText"><![CDATA[Get Personal News for you anytime & anywhere]]></string>
+    <string name="tvEmailHintMsg">E-mail</string>
+    <string name="tvPasswordHintMsg">Password</string>
+    <string name="btnLoginText">Login</string>
+    <string name="tvDontHaveAnAccount">Don\'t have an account?</string>
+    <string name="tvSignUpText">Sign up</string>
+    <string name="tvLoginTitle">Login</string>
+    <string name="tvSignUpTitle">Sign up</string>
+    <string name="btnSignUpText">Sign up</string>
+    <string name="textAlreadyHaveAnAccount">Already have an account?</string>
 </resources>
