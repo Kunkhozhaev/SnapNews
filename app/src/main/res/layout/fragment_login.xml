@@ -76,8 +76,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/tvEmailHintMsg"
-            app:helperText="*This field is mandatory"
-            app:helperTextTextColor="@color/red_bold"
             app:startIconDrawable="@drawable/ic_email">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -94,8 +92,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/tvPasswordHintMsg"
-            app:helperText="*This field is mandatory"
-            app:helperTextTextColor="@color/red_bold"
             app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/ic_lock">
 

@@ -40,4 +40,5 @@
     <string name="textAlreadyHaveAnAccount">Already have an account?</string>
     <string name="tvTextOR">OR</string>
     <string name="sign_up_with_google">Sign up with Google</string>
+    <string name="password_length_condition">Password must not be less than 8 characters</string>
 </resources>
