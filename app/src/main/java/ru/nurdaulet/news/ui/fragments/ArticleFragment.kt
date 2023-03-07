@@ -26,7 +26,6 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     private val binding: FragmentArticleBinding
         get() = _binding ?: throw RuntimeException("binding == null")
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -39,6 +39,8 @@
         android:text="@string/tvSignInPageTitleText"
         android:textColor="@color/black"
         android:textStyle="bold"
+        android:textSize="18sp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_bar" />
@@ -113,9 +115,11 @@
         android:layout_marginTop="32dp"
         android:backgroundTint="@color/red_light"
         android:text="@string/btnLoginText"
+        android:textAllCaps="false"
+        android:fontFamily="@font/poppins_regular"
         android:textColor="@color/white"
-        android:textSize="16sp"
-        app:cornerRadius="8dp"
+        android:textSize="20sp"
+        app:cornerRadius="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/container_auth" />
@@ -132,6 +136,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
             android:text="@string/tvDontHaveAnAccount" />
 
         <TextView
@@ -139,6 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:fontFamily="@font/poppins_regular"
             android:text="@string/tvSignUpText"
             android:textColor="@color/red_bold" />
     </LinearLayout>
