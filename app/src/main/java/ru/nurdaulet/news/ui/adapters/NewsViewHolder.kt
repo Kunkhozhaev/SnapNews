@@ -11,7 +11,7 @@ import ru.nurdaulet.news.domain.models.Article
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val ivArticleImage: ImageView = itemView.findViewById(R.id.ivArticleImage)
     private val tvSource: TextView = itemView.findViewById(R.id.tvSource)
@@ -39,6 +39,7 @@ class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val secondApiFormat = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
         } else {
+            // TODO time
             TODO("VERSION.SDK_INT < O")
         }
 

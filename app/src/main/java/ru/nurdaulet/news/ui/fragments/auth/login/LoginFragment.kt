@@ -34,6 +34,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         firebaseAuth = FirebaseAuth.getInstance()
 
         //TODO navcontroller
+        // TODO ViewModel
 
         binding.apply {
             btnLogin.setOnClickListener {

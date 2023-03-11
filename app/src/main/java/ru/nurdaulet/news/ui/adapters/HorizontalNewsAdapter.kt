@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.ListAdapter
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.domain.models.Article
 
-class BreakingNewsAdapter : ListAdapter<Article, BreakingNewsViewHolder>(ArticleDiffCallback()) {
+class HorizontalNewsAdapter : ListAdapter<Article, HorizontalNewsViewHolder>(ArticleDiffCallback()) {
 
     private var onArticleClickListener: ((Article) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreakingNewsViewHolder {
-        return BreakingNewsViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorizontalNewsViewHolder {
+        return HorizontalNewsViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.item_top_news_preview,
                 parent,
@@ -19,7 +19,7 @@ class BreakingNewsAdapter : ListAdapter<Article, BreakingNewsViewHolder>(Article
             )
         )
     }
-    override fun onBindViewHolder(holder: BreakingNewsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HorizontalNewsViewHolder, position: Int) {
         holder.onBind(currentList[position], onArticleClickListener)
     }
 

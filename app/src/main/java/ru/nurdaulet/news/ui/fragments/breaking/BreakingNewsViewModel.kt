@@ -1,4 +1,4 @@
-package ru.nurdaulet.news.ui
+package ru.nurdaulet.news.ui.fragments.breaking
 
 import android.app.Application
 import android.content.Context
@@ -9,15 +9,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import ru.nurdaulet.news.domain.models.Article
 import ru.nurdaulet.news.domain.models.NewsResponse
 import ru.nurdaulet.news.domain.repository.NewsRepository
+import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.util.Constants.COUNTRY_CODE
 import ru.nurdaulet.news.util.Constants.listOfCategories
 import ru.nurdaulet.news.util.Resource
 import java.io.IOException
 
-class NewsViewModel(
+class BreakingNewsViewModel(
     app: Application,
     private val newsRepository: NewsRepository
 ) : AndroidViewModel(app) {
@@ -25,9 +25,7 @@ class NewsViewModel(
     val breakingNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var breakingNewsPage = 1
     var breakingNewsResponse: NewsResponse? = null
-    val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
-    var searchNewsPage = 1
-    var searchNewsResponse: NewsResponse? = null
+
     val categoryNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var categoryNewsPage = 1
     var categoryNewsResponse: NewsResponse? = null
@@ -41,10 +39,6 @@ class NewsViewModel(
         safeBreakingNewsCall(countryCode)
     }
 
-    fun searchNews(searchQuery: String, paginate: Boolean) = viewModelScope.launch {
-        safeSearchNewsCall(searchQuery, paginate)
-    }
-
     fun getCategoryNews(countryCode: String, category: Int, paginate: Boolean) =
         viewModelScope.launch {
             safeCategoryNewsCall(countryCode, category, paginate)
@@ -54,14 +48,6 @@ class NewsViewModel(
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 breakingNewsResponse = resultResponse
-                /*breakingNewsPage++
-                if (breakingNewsResponse == null) {
-                    breakingNewsResponse = resultResponse
-                } else {
-                    val oldArticles = breakingNewsResponse?.articles
-                    val newArticles = resultResponse.articles
-                    oldArticles?.addAll(newArticles)
-                }*/
                 return Resource.Success(breakingNewsResponse ?: resultResponse)
             }
         }
@@ -97,44 +83,6 @@ class NewsViewModel(
             return Resource.Error("Server request is null")
         }
         return Resource.Error(response.message())
-    }
-
-    private fun handleSearchNewsResponse(
-        response: Response<NewsResponse>,
-        paginate: Boolean
-    ): Resource<NewsResponse> {
-        if (response.isSuccessful) {
-            response.body()?.let { resultResponse ->
-                if (paginate) {
-                    searchNewsPage++
-                    if (searchNewsResponse == null) {
-                        searchNewsResponse = resultResponse
-                    } else {
-                        val oldArticles = searchNewsResponse?.articles
-                        val newArticles = resultResponse.articles
-                        oldArticles?.addAll(newArticles)
-                    }
-                } else {
-                    searchNewsPage = 1
-                    searchNewsResponse = resultResponse
-                }
-                return Resource.Success(searchNewsResponse ?: resultResponse)
-            }
-        }
-        if (response.body() == null) {
-            return Resource.Success(searchNewsResponse!!)
-        }
-        return Resource.Error(response.message())
-    }
-
-    fun saveArticle(article: Article) = viewModelScope.launch {
-        newsRepository.upsert(article)
-    }
-
-    fun getSavedNews() = newsRepository.getSavedNews()
-
-    fun deleteArticle(article: Article) = viewModelScope.launch {
-        newsRepository.deleteArticle(article)
     }
 
     private suspend fun safeBreakingNewsCall(countryCode: String) {
@@ -176,23 +124,6 @@ class NewsViewModel(
             when (t) {
                 is IOException -> categoryNews.postValue(Resource.Error("Network Failure"))
                 else -> categoryNews.postValue(Resource.Error("Conversion Error"))
-            }
-        }
-    }
-
-    private suspend fun safeSearchNewsCall(searchQuery: String, paginate: Boolean) {
-        searchNews.postValue(Resource.Loading())
-        try {
-            if (hasInternetConnection()) {
-                val response = newsRepository.searchNews(searchQuery, searchNewsPage)
-                searchNews.postValue(handleSearchNewsResponse(response, paginate))
-            } else {
-                searchNews.postValue(Resource.Error("No internet connection"))
-            }
-        } catch (t: Throwable) {
-            when (t) {
-                is IOException -> searchNews.postValue(Resource.Error("Network Failure"))
-                else -> searchNews.postValue(Resource.Error("Conversion Error"))
             }
         }
     }

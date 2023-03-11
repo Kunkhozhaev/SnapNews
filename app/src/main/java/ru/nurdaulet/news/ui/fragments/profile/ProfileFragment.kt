@@ -1,4 +1,4 @@
-package ru.nurdaulet.news.ui.fragments
+package ru.nurdaulet.news.ui.fragments.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.databinding.FragmentProfileInfoBinding
+import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainer
 
 class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
 

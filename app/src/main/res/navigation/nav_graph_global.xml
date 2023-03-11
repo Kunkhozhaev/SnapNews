@@ -32,11 +32,11 @@
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="ru.nurdaulet.news.ui.fragments.EditProfileFragment"
+        android:name="ru.nurdaulet.news.ui.fragments.profile.EditProfileFragment"
         android:label="EditProfileFragment" />
     <fragment
         android:id="@+id/searchNewsFragment"
-        android:name="ru.nurdaulet.news.ui.fragments.SearchNewsFragment"
+        android:name="ru.nurdaulet.news.ui.fragments.search.SearchNewsFragment"
         android:label="SearchNewsFragment" >
         <action
             android:id="@+id/action_searchNewsFragment_to_articleFragment"
@@ -48,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
-        android:name="ru.nurdaulet.news.ui.fragments.ArticleFragment"
+        android:name="ru.nurdaulet.news.ui.fragments.article.ArticleFragment"
         android:label="ArticleFragment" >
         <argument
             android:name="article"

@@ -33,6 +33,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         firebaseAuth = FirebaseAuth.getInstance()
 
         //TODO navcontroller
+        //TODO ViewModel
 
         binding.apply {
             iconBack.setOnClickListener {

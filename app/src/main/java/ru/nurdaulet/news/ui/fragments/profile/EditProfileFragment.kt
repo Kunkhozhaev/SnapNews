@@ -1,4 +1,4 @@
-package ru.nurdaulet.news.ui.fragments
+package ru.nurdaulet.news.ui.fragments.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater

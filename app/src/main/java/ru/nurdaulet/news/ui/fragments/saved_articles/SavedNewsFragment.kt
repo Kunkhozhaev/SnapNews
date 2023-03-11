@@ -1,10 +1,11 @@
-package ru.nurdaulet.news.ui.fragments
+package ru.nurdaulet.news.ui.fragments.saved_articles
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -13,13 +14,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.databinding.FragmentSavedNewsBinding
-import ru.nurdaulet.news.ui.NewsActivity
-import ru.nurdaulet.news.ui.NewsViewModel
+import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.ui.adapters.NewsAdapter
+import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainer
 
 class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
-    lateinit var viewModel: NewsViewModel
+    lateinit var viewModel: SavedNewsViewModel
+    lateinit var viewModelFactory: ViewModelFactory
     lateinit var newsAdapter: NewsAdapter
     private lateinit var parentNavController: NavController
 
@@ -39,7 +41,8 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (activity as NewsActivity).viewModel
+        viewModel = ViewModelProvider(this, viewModelFactory)[SavedNewsViewModel::class.java]
+
         parentNavController =
             (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
         setupRecyclerView()

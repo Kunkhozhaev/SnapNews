@@ -1,4 +1,4 @@
-package ru.nurdaulet.news.ui.fragments
+package ru.nurdaulet.news.ui.fragments.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +8,13 @@ import android.widget.AbsListView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.databinding.FragmentSearchNewsBinding
-import ru.nurdaulet.news.ui.NewsActivity
-import ru.nurdaulet.news.ui.NewsViewModel
+import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.ui.adapters.NewsAdapter
 import ru.nurdaulet.news.util.Constants.PAGE_OFFSET
 import ru.nurdaulet.news.util.Constants.QUERY_PAGE_SIZE
@@ -22,7 +22,8 @@ import ru.nurdaulet.news.util.Resource
 
 class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
-    lateinit var viewModel: NewsViewModel
+    lateinit var viewModel: SearchNewsViewModel
+    lateinit var viewModelFactory: ViewModelFactory
     lateinit var newsAdapter: NewsAdapter
 
     private var _binding: FragmentSearchNewsBinding? = null
@@ -42,7 +43,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (activity as NewsActivity).viewModel
+        viewModel = ViewModelProvider(this, viewModelFactory)[SearchNewsViewModel::class.java]
         setupRecyclerView()
         setupSearchNewsObserve()
 

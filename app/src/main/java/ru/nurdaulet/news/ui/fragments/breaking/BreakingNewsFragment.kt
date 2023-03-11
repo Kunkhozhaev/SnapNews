@@ -1,4 +1,4 @@
-package ru.nurdaulet.news.ui.fragments
+package ru.nurdaulet.news.ui.fragments.breaking
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,10 +15,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.databinding.FragmentBreakingNewsBinding
-import ru.nurdaulet.news.ui.NewsActivity
-import ru.nurdaulet.news.ui.NewsViewModel
-import ru.nurdaulet.news.ui.adapters.BreakingNewsAdapter
+import ru.nurdaulet.news.ui.ViewModelFactory
+import ru.nurdaulet.news.ui.adapters.HorizontalNewsAdapter
 import ru.nurdaulet.news.ui.adapters.NewsAdapter
+import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainer
 import ru.nurdaulet.news.util.Constants.COUNTRY_CODE
 import ru.nurdaulet.news.util.Constants.PAGE_OFFSET
 import ru.nurdaulet.news.util.Constants.QUERY_PAGE_SIZE
@@ -25,9 +26,10 @@ import ru.nurdaulet.news.util.Resource
 
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
-    lateinit var viewModel: NewsViewModel
+    lateinit var viewModel: BreakingNewsViewModel
+    lateinit var viewModelFactory: ViewModelFactory
     private lateinit var newsAdapter: NewsAdapter
-    private lateinit var breakingNewsAdapter: BreakingNewsAdapter
+    private lateinit var horizontalNewsAdapter: HorizontalNewsAdapter
     private lateinit var parentNavController: NavController
     private var tabPosition = 0
 
@@ -47,7 +49,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (activity as NewsActivity).viewModel
+        viewModel = ViewModelProvider(this, viewModelFactory)[BreakingNewsViewModel::class.java]
         parentNavController =
             (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
         setupRecyclerView()
@@ -76,7 +78,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { topNewsResponse ->
-                        breakingNewsAdapter.submitList(topNewsResponse.articles.toList())
+                        horizontalNewsAdapter.submitList(topNewsResponse.articles.toList())
                     }
                 }
                 is Resource.Error -> {
@@ -122,7 +124,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     }
 
     private fun adapterClickListeners() {
-        breakingNewsAdapter.setOnArticleClickListener { article ->
+        horizontalNewsAdapter.setOnArticleClickListener { article ->
             val bundle = Bundle().apply {
                 putSerializable("article", article)
             }
@@ -187,10 +189,10 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
     private fun setupRecyclerView() {
         newsAdapter = NewsAdapter()
-        breakingNewsAdapter = BreakingNewsAdapter()
+        horizontalNewsAdapter = HorizontalNewsAdapter()
 
         binding.rvBreakingNews.apply {
-            adapter = breakingNewsAdapter
+            adapter = horizontalNewsAdapter
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             //addOnScrollListener(breakingArticlesScrollListener)
         }

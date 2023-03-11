@@ -1,4 +1,4 @@
-package ru.nurdaulet.news.ui
+package ru.nurdaulet.news.app
 
 import android.app.Application
 

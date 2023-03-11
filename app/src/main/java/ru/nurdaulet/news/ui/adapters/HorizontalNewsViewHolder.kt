@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.domain.models.Article
 
-class BreakingNewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class HorizontalNewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val ivBreakingNews: ImageView = itemView.findViewById(R.id.ivBreakingNews)
     private val tvBreakingNewsTitle: TextView = itemView.findViewById(R.id.tvBreakingNewsTitle)

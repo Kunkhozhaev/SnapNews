@@ -6,15 +6,15 @@
 
     <fragment
         android:id="@+id/breakingNewsFragment"
-        android:name="ru.nurdaulet.news.ui.fragments.BreakingNewsFragment"
+        android:name="ru.nurdaulet.news.ui.fragments.breaking.BreakingNewsFragment"
         android:label="BreakingNewsFragment" />
     <fragment
         android:id="@+id/savedNewsFragment"
-        android:name="ru.nurdaulet.news.ui.fragments.SavedNewsFragment"
+        android:name="ru.nurdaulet.news.ui.fragments.saved_articles.SavedNewsFragment"
         android:label="SavedNewsFragment" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="ru.nurdaulet.news.ui.fragments.ProfileFragment"
+        android:name="ru.nurdaulet.news.ui.fragments.profile.ProfileFragment"
         android:label="ProfileFragment" >
     </fragment>
 <!--

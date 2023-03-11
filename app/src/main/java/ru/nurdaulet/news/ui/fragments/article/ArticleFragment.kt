@@ -1,4 +1,4 @@
-package ru.nurdaulet.news.ui.fragments
+package ru.nurdaulet.news.ui.fragments.article
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -9,17 +9,19 @@ import android.view.ViewGroup
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.databinding.FragmentArticleBinding
-import ru.nurdaulet.news.ui.NewsActivity
-import ru.nurdaulet.news.ui.NewsViewModel
+import ru.nurdaulet.news.ui.ViewModelFactory
+import ru.nurdaulet.news.ui.fragments.ArticleFragmentArgs
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 
-    lateinit var viewModel: NewsViewModel
+    lateinit var viewModel: ArticleViewModel
+    lateinit var viewModelFactory: ViewModelFactory
     private val args: ArticleFragmentArgs by navArgs()
 
     private var _binding: FragmentArticleBinding? = null
@@ -38,7 +40,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val article = args.article
-        viewModel = (activity as NewsActivity).viewModel
+        viewModel = ViewModelProvider(this, viewModelFactory)[ArticleViewModel::class.java]
 
 
         binding.apply {

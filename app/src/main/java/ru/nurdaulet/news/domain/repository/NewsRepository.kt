@@ -1,24 +1,24 @@
 package ru.nurdaulet.news.domain.repository
 
-import ru.nurdaulet.news.data.api.RetrofitInstance
-import ru.nurdaulet.news.data.database.ArticleDatabase
+import androidx.lifecycle.LiveData
+import retrofit2.Response
 import ru.nurdaulet.news.domain.models.Article
+import ru.nurdaulet.news.domain.models.NewsResponse
 
-class NewsRepository(
-    private val db: ArticleDatabase
-) {
-    suspend fun getBreakingNews(countryCode: String, pageNumber: Int) =
-        RetrofitInstance.api.getBreakingNews(countryCode, pageNumber)
+interface NewsRepository {
+    suspend fun getBreakingNews(countryCode: String, pageNumber: Int): Response<NewsResponse>
 
-    suspend fun getCategoryNews(countryCode: String, category: String, pageNumber: Int) =
-        RetrofitInstance.api.getCategoryNews(countryCode, category, pageNumber)
+    suspend fun getCategoryNews(
+        countryCode: String,
+        category: String,
+        pageNumber: Int
+    ): Response<NewsResponse>
 
-    suspend fun searchNews(searchQuery: String, pageNumber: Int) =
-        RetrofitInstance.api.searchForNews(searchQuery, pageNumber)
+    suspend fun searchNews(searchQuery: String, pageNumber: Int): Response<NewsResponse>
 
-    suspend fun upsert(article: Article) = db.getArticleDao().upsert(article)
+    suspend fun upsert(article: Article): Long
 
-    fun getSavedNews() = db.getArticleDao().getAllArticles()
+    fun getSavedNews(): LiveData<List<Article>>
 
-    suspend fun deleteArticle(article: Article) = db.getArticleDao().deleteArticle(article.title)
+    suspend fun deleteArticle(article: Article)
 }
