@@ -2,7 +2,10 @@ package ru.nurdaulet.news.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import ru.nurdaulet.news.di.ApplicationScope
+import javax.inject.Provider
 
+@ApplicationScope
 class ViewModelFactory(
 //    val app: Application,
 //    val newsRepository: NewsRepository

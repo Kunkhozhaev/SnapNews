@@ -16,7 +16,6 @@ import com.google.android.material.snackbar.Snackbar
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.databinding.FragmentArticleBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
-import ru.nurdaulet.news.ui.fragments.ArticleFragmentArgs
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 

@@ -1,23 +1,24 @@
 package ru.nurdaulet.news.ui.fragments.search
 
+import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.domain.models.NewsResponse
 import ru.nurdaulet.news.domain.repository.NewsRepository
-import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.util.Resource
 import java.io.IOException
 
 class SearchNewsViewModel(
-    private val app: NewsApplication,
+    app: Application,
     private val newsRepository: NewsRepository
-) : ViewModel() {
+) : AndroidViewModel(app) {
 
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var searchNewsPage = 1
@@ -73,7 +74,7 @@ class SearchNewsViewModel(
     }
 
     private fun hasInternetConnection(): Boolean {
-        val connectivityManager = app.getSystemService(
+        val connectivityManager = getApplication<NewsApplication>().getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as ConnectivityManager
 

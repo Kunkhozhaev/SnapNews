@@ -1,12 +1,17 @@
 package ru.nurdaulet.news.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import ru.nurdaulet.news.data.api.RetrofitInstance
-import ru.nurdaulet.news.data.database.ArticleDatabase
+import ru.nurdaulet.news.data.database.ArticleDao
+import ru.nurdaulet.news.data.database.ArticleModelMapper
 import ru.nurdaulet.news.domain.models.Article
 import ru.nurdaulet.news.domain.repository.NewsRepository
+import javax.inject.Inject
 
-class NewsRepositoryImpl(
-    private val db: ArticleDatabase
+class NewsRepositoryImpl @Inject constructor(
+    private val articleDao: ArticleDao,
+    private val mapper: ArticleModelMapper,
 ) : NewsRepository {
 
     override suspend fun getBreakingNews(countryCode: String, pageNumber: Int) =
@@ -18,9 +23,14 @@ class NewsRepositoryImpl(
     override suspend fun searchNews(searchQuery: String, pageNumber: Int) =
         RetrofitInstance.api.searchForNews(searchQuery, pageNumber)
 
-    override suspend fun upsert(article: Article) = db.getArticleDao().upsert(article)
+    override suspend fun upsert(article: Article) =
+        articleDao.upsert(mapper.mapEntityToDbModel(article))
 
-    override fun getSavedNews() = db.getArticleDao().getAllArticles()
+    override fun getSavedNews(): LiveData<List<Article>> = Transformations.map(
+        articleDao.getAllArticles()
+    ) {
+        mapper.mapListDbModelToListEntity(it)
+    }
 
-    override suspend fun deleteArticle(article: Article) = db.getArticleDao().deleteArticle(article.title)
+    override suspend fun deleteArticle(article: Article) = articleDao.deleteArticle(article.title)
 }
