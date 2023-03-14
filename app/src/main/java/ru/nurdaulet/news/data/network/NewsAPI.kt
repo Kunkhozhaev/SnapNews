@@ -1,4 +1,4 @@
-package ru.nurdaulet.news.data.api
+package ru.nurdaulet.news.data.network
 
 import retrofit2.Response
 import retrofit2.http.GET

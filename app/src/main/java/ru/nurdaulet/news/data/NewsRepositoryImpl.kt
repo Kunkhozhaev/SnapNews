@@ -1,10 +1,11 @@
 package ru.nurdaulet.news.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import ru.nurdaulet.news.data.api.RetrofitInstance
+import androidx.lifecycle.map
+import ru.nurdaulet.news.data.network.RetrofitInstance
 import ru.nurdaulet.news.data.database.ArticleDao
 import ru.nurdaulet.news.data.database.ArticleModelMapper
+import ru.nurdaulet.news.data.network.AuthFirebase
 import ru.nurdaulet.news.domain.models.Article
 import ru.nurdaulet.news.domain.repository.NewsRepository
 import javax.inject.Inject
@@ -12,6 +13,7 @@ import javax.inject.Inject
 class NewsRepositoryImpl @Inject constructor(
     private val articleDao: ArticleDao,
     private val mapper: ArticleModelMapper,
+    private val auth: AuthFirebase,
 ) : NewsRepository {
 
     override suspend fun getBreakingNews(countryCode: String, pageNumber: Int) =
@@ -26,11 +28,27 @@ class NewsRepositoryImpl @Inject constructor(
     override suspend fun upsert(article: Article) =
         articleDao.upsert(mapper.mapEntityToDbModel(article))
 
-    override fun getSavedNews(): LiveData<List<Article>> = Transformations.map(
-        articleDao.getAllArticles()
-    ) {
+    override fun getSavedNews(): LiveData<List<Article>> = articleDao.getAllArticles().map {
         mapper.mapListDbModelToListEntity(it)
     }
-
     override suspend fun deleteArticle(article: Article) = articleDao.deleteArticle(article.title)
+
+    override suspend fun login(
+        email: String,
+        password: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    ) {
+        auth.login(email, password, onSuccess, onFailure)
+    }
+
+    override suspend fun signUp(
+        username: String,
+        email: String,
+        password: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    ) {
+        auth.signUp(username, email, password, onSuccess, onFailure)
+    }
 }

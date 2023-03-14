@@ -88,7 +88,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun validateLoginInput(): Boolean {
         binding.apply {
-            return if (etEmail.text!!.isNotEmpty() && etPassword.text!!.isNotEmpty()
+            return if (etEmail.text!!.isNotEmpty()
+                && etPassword.text!!.isNotEmpty()
                 && etPassword.length() >= 8
             ) {
                 true

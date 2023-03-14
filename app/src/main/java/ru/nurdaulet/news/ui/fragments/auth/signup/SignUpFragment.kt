@@ -56,7 +56,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
             btnSignUp.setOnClickListener {
                 if (validateSignUpInput()) {
-                    viewModel.signUp(etEmail.text.toString(), etPassword.text.toString())
+                    viewModel.signUp(etUserName.text.toString(), etEmail.text.toString(), etPassword.text.toString())
                 }
             }
 
@@ -77,7 +77,10 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                 }
                 is Resource.Error -> {
                     setLoading(false)
-                    Toast.makeText(requireContext(), "Empty fields", Toast.LENGTH_SHORT).show()
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
                 is Resource.Loading -> {
                     setLoading(true)
@@ -88,7 +91,9 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     private fun validateSignUpInput(): Boolean {
         binding.apply {
-            return if (etEmail.text!!.isNotEmpty() && etPassword.text!!.isNotEmpty()
+            return if (etUserName.text!!.isNotEmpty()
+                && etEmail.text!!.isNotEmpty()
+                && etPassword.text!!.isNotEmpty()
                 && etPassword.length() >= 8
             ) {
                 true

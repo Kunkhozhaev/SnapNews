@@ -1,4 +1,4 @@
-package ru.nurdaulet.news.data.api
+package ru.nurdaulet.news.data.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

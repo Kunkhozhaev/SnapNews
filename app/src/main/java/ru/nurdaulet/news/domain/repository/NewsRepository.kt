@@ -21,4 +21,19 @@ interface NewsRepository {
     fun getSavedNews(): LiveData<List<Article>>
 
     suspend fun deleteArticle(article: Article)
+
+    suspend fun login(
+        email: String,
+        password: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    )
+
+    suspend fun signUp(
+        username: String,
+        email: String,
+        password: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    )
 }
