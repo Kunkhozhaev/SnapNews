@@ -1,6 +1,7 @@
 package ru.nurdaulet.news.ui.fragments.article
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,18 +15,29 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import ru.nurdaulet.news.R
+import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.databinding.FragmentArticleBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
+import javax.inject.Inject
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
-
-    lateinit var viewModel: ArticleViewModel
+    @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    private lateinit var viewModel: ArticleViewModel
     private val args: ArticleFragmentArgs by navArgs()
+    private val component by lazy{
+        (requireActivity().application as NewsApplication).component
+    }
 
     private var _binding: FragmentArticleBinding? = null
     private val binding: FragmentArticleBinding
         get() = _binding ?: throw RuntimeException("binding == null")
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -1,5 +1,6 @@
 package ru.nurdaulet.news.ui.fragments.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,23 +14,33 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.nurdaulet.news.R
+import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.databinding.FragmentSearchNewsBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.ui.adapters.NewsAdapter
 import ru.nurdaulet.news.util.Constants.PAGE_OFFSET
 import ru.nurdaulet.news.util.Constants.QUERY_PAGE_SIZE
 import ru.nurdaulet.news.util.Resource
+import javax.inject.Inject
 
 class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
-    lateinit var viewModel: SearchNewsViewModel
+    @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    lateinit var newsAdapter: NewsAdapter
+    private val component by lazy{
+        (requireActivity().application as NewsApplication).component
+    }
+    private lateinit var viewModel: SearchNewsViewModel
+    private lateinit var newsAdapter: NewsAdapter
 
     private var _binding: FragmentSearchNewsBinding? = null
     private val binding: FragmentSearchNewsBinding
         get() = _binding ?: throw RuntimeException("binding == null")
 
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

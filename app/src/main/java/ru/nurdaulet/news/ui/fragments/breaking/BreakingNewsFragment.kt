@@ -1,5 +1,6 @@
 package ru.nurdaulet.news.ui.fragments.breaking
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import ru.nurdaulet.news.R
+import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.databinding.FragmentBreakingNewsBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.ui.adapters.HorizontalNewsAdapter
@@ -23,11 +25,17 @@ import ru.nurdaulet.news.util.Constants.COUNTRY_CODE
 import ru.nurdaulet.news.util.Constants.PAGE_OFFSET
 import ru.nurdaulet.news.util.Constants.QUERY_PAGE_SIZE
 import ru.nurdaulet.news.util.Resource
+import javax.inject.Inject
 
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
-    lateinit var viewModel: BreakingNewsViewModel
+    @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy{
+        (requireActivity().application as NewsApplication).component
+    }
+
+    private lateinit var viewModel: BreakingNewsViewModel
     private lateinit var newsAdapter: NewsAdapter
     private lateinit var horizontalNewsAdapter: HorizontalNewsAdapter
     private lateinit var parentNavController: NavController
@@ -36,6 +44,11 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     private var _binding: FragmentBreakingNewsBinding? = null
     private val binding: FragmentBreakingNewsBinding
         get() = _binding ?: throw RuntimeException("binding == null")
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -194,7 +207,6 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         binding.rvBreakingNews.apply {
             adapter = horizontalNewsAdapter
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-            //addOnScrollListener(breakingArticlesScrollListener)
         }
         binding.rvCategoryNews.apply {
             adapter = newsAdapter

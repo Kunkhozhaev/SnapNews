@@ -5,8 +5,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.nurdaulet.news.domain.models.Article
 import ru.nurdaulet.news.domain.repository.NewsRepository
+import javax.inject.Inject
 
-class ArticleViewModel(
+class ArticleViewModel @Inject constructor(
     private val newsRepository: NewsRepository
 ) : ViewModel() {
 

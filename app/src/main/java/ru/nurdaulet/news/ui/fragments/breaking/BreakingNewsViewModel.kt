@@ -16,8 +16,9 @@ import ru.nurdaulet.news.util.Constants.COUNTRY_CODE
 import ru.nurdaulet.news.util.Constants.listOfCategories
 import ru.nurdaulet.news.util.Resource
 import java.io.IOException
+import javax.inject.Inject
 
-class BreakingNewsViewModel(
+class BreakingNewsViewModel @Inject constructor(
     app: Application,
     private val newsRepository: NewsRepository
 ) : AndroidViewModel(app) {

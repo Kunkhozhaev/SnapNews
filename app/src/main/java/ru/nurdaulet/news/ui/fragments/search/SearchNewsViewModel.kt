@@ -14,8 +14,9 @@ import ru.nurdaulet.news.domain.models.NewsResponse
 import ru.nurdaulet.news.domain.repository.NewsRepository
 import ru.nurdaulet.news.util.Resource
 import java.io.IOException
+import javax.inject.Inject
 
-class SearchNewsViewModel(
+class SearchNewsViewModel @Inject constructor(
     app: Application,
     private val newsRepository: NewsRepository
 ) : AndroidViewModel(app) {
