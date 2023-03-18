@@ -56,7 +56,11 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
             btnSignUp.setOnClickListener {
                 if (validateSignUpInput()) {
-                    viewModel.signUp(etUserName.text.toString(), etEmail.text.toString(), etPassword.text.toString())
+                    viewModel.signUp(
+                        etUserName.text.toString(),
+                        etEmail.text.toString(),
+                        etPassword.text.toString()
+                    )
                 }
             }
 
@@ -91,14 +95,34 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     private fun validateSignUpInput(): Boolean {
         binding.apply {
-            return if (etUserName.text!!.isNotEmpty()
-                && etEmail.text!!.isNotEmpty()
-                && etPassword.text!!.isNotEmpty()
-                && etPassword.length() >= 8
+            val usernameIsNotEmtpy = etUserName.text!!.isNotEmpty()
+            val emailIsNotEmpty = etEmail.text!!.isNotEmpty()
+            val passwordIsNotEmpty = etPassword.text!!.isNotEmpty()
+            val passwordLengthIsValid = etPassword.length() >= 8
+            val passwordsMatch = etPassword.text.toString() == etConfirmPassword.text.toString()
+            //TODO error observers
+
+            return if (usernameIsNotEmtpy
+                && emailIsNotEmpty
+                && passwordIsNotEmpty
+                && passwordLengthIsValid
+                && passwordsMatch
             ) {
                 true
-            } else if (etPassword.length() < 8) {
+            } else if (!usernameIsNotEmtpy) {
+                tilUserName.error = getString(R.string.username_is_empty)
+                false
+            } else if (!emailIsNotEmpty) {
+                tilEmail.error = getString(R.string.email_is_empty)
+                false
+            } else if (!passwordIsNotEmpty) {
+                tilPassword.error = getString(R.string.password_is_empty)
+                false
+            } else if (!passwordLengthIsValid) {
                 tilPassword.error = getString(R.string.password_length_condition)
+                false
+            } else if (!passwordsMatch) {
+                tilConfirmPassword.error = getString(R.string.password_match_condition)
                 false
             } else {
                 false
