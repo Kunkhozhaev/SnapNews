@@ -28,7 +28,7 @@
     <string name="tvUsernameText">User Name</string>
     <string name="tvEditPageSurnameTitle">Last name</string>
     <string name="tvEditPageEmailTitle">e-mail</string>
-    <string name="tvSignInPageTitleText"><![CDATA[Get Personal News for you anytime & anywhere]]></string>
+    <string name="tvSignInPageTitleText"><![CDATA[Get latest news for you anytime & anywhere]]></string>
     <string name="tvEmailHintMsg">E-mail</string>
     <string name="tvPasswordHintMsg">Password</string>
     <string name="btnLoginText">Login</string>
