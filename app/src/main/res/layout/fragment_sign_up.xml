@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:orientation="vertical"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -124,86 +124,22 @@
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_btnSignUps"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="24dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="60dp"
         android:layout_marginHorizontal="24dp"
+        android:backgroundTint="@color/red_light"
+        android:textAllCaps="false"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/btnSignUpText"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:cornerRadius="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_auth">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSignUp"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:backgroundTint="@color/red_light"
-            android:textAllCaps="false"
-            android:fontFamily="@font/poppins_regular"
-            android:text="@string/btnSignUpText"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:cornerRadius="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/container_auth" />
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="36dp"
-            app:layout_constraintBottom_toTopOf="@id/btnGoogleSignUp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnSignUp">
-
-            <TextView
-                android:id="@+id/tvOrText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:fontFamily="@font/poppins_regular"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="@string/tvTextOR" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_centerVertical="true"
-                android:layout_toStartOf="@id/tvOrText"
-                android:background="@color/gray" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/tvOrText"
-                android:background="@color/gray" />
-
-        </RelativeLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGoogleSignUp"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:backgroundTint="@color/red_light"
-            android:text="@string/sign_up_with_google"
-            app:icon="@drawable/ic_google"
-            app:iconPadding="-12dp"
-            android:textAllCaps="false"
-            android:fontFamily="@font/poppins_regular"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:cornerRadius="24dp"
-            app:layout_constraintBottom_toTopOf="@id/ll_login_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/relativeLayout" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/container_auth" />
 
     <LinearLayout
         android:id="@+id/ll_login_text"
@@ -213,7 +149,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_btnSignUps">
+        app:layout_constraintTop_toBottomOf="@+id/btnSignUp">
 
         <TextView
             android:layout_width="wrap_content"

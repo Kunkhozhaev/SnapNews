@@ -1,6 +1,7 @@
 package ru.nurdaulet.news.ui.fragments.auth.login
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,16 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.databinding.FragmentLoginBinding
@@ -26,6 +37,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private var _binding: FragmentLoginBinding? = null
     private val binding: FragmentLoginBinding
         get() = _binding ?: throw RuntimeException("binding == null")
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var signInClient: GoogleSignInClient
+
 
     private val component by lazy {
         (requireActivity().application as NewsApplication).component
@@ -50,7 +65,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         //TODO navcontroller
         viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
 
+        auth = FirebaseAuth.getInstance()
+        val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.sign_in_with_google))
+            .requestEmail()
+            .build()
+        signInClient = GoogleSignIn.getClient(requireActivity(), options)
+
         binding.apply {
+            btnGoogleSignIn.setOnClickListener {
+                signInClient.signInIntent.also {
+                    startActivityForResult(it, 0)
+                }
+            }
             btnLogin.setOnClickListener {
                 if (validateLoginInput()) {
                     viewModel.login(etEmail.text.toString(), etPassword.text.toString())
@@ -86,14 +113,50 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 
+    private fun googleAuthForFirebase(account: GoogleSignInAccount) {
+        val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                auth.signInWithCredential(credentials).addOnSuccessListener {
+                    Toast.makeText(requireActivity(), "blabla", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireActivity(), e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == 0) {
+            val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
+            account?.let {
+                googleAuthForFirebase(it)
+            }
+        }
+    }
+
     private fun validateLoginInput(): Boolean {
         binding.apply {
-            return if (etEmail.text!!.isNotEmpty()
-                && etPassword.text!!.isNotEmpty()
-                && etPassword.length() >= 8
+            val emailIsNotEmpty = etEmail.text!!.isNotEmpty()
+            val passwordIsNotEmpty = etPassword.text!!.isNotEmpty()
+            val passwordLengthIsValid = etPassword.length() >= 8
+            //TODO error observers
+
+            return if (emailIsNotEmpty
+                && passwordIsNotEmpty
+                && passwordLengthIsValid
             ) {
                 true
-            } else if (etPassword.length() < 8) {
+            } else if (!emailIsNotEmpty) {
+                tilEmail.error = getString(R.string.email_is_empty)
+                false
+            } else if (!passwordIsNotEmpty) {
+                tilPassword.error = getString(R.string.password_is_empty)
+                false
+            } else if (!passwordLengthIsValid) {
                 tilPassword.error = getString(R.string.password_length_condition)
                 false
             } else {

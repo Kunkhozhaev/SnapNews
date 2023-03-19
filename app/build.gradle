@@ -53,6 +53,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:24.4.4'
     implementation 'com.google.firebase:firebase-storage:20.1.0'
 
+    //Google Sign-in
+    implementation 'com.google.android.gms:play-services-auth:20.4.1'
+
     //Dagger 2
     implementation 'com.google.dagger:dagger:2.43.2'
     kapt 'com.google.dagger:dagger-compiler:2.42'
