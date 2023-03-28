@@ -28,7 +28,7 @@
     <string name="tvUsernameText">User Name</string>
     <string name="tvEditPageSurnameTitle">Last name</string>
     <string name="tvEditPageEmailTitle">e-mail</string>
-    <string name="tvSignInPageTitleText"><![CDATA[Get latest news for you anytime & anywhere]]></string>
+    <string name="tvSignInPageTitleText">Get latest news for you\n anytime &amp; anywhere</string>
     <string name="tvEmailHintMsg">E-mail</string>
     <string name="tvPasswordHintMsg">Password</string>
     <string name="btnLoginText">Login</string>
@@ -46,5 +46,6 @@
     <string name="username_is_empty">Username should not be empty</string>
     <string name="email_is_empty">E-mail should not be empty</string>
     <string name="password_is_empty">Password should not be empty</string>
-    <string name="google_auth_id">201600956776–4ppp6ol5kkamv84bpisot5nq0colc0pb.apps.googleusercontent.com</string>
+<!--    Don't touch this id-->
+    <string name="google_auth_id">201600956776-4ppp6ol5kkamv84bpisot5nq0colc0pb.apps.googleusercontent.com</string>
 </resources>

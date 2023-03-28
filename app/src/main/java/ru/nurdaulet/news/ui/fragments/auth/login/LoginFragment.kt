@@ -1,12 +1,15 @@
 package ru.nurdaulet.news.ui.fragments.auth.login
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -41,7 +44,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var auth: FirebaseAuth
     private lateinit var signInClient: GoogleSignInClient
 
-
     private val component by lazy {
         (requireActivity().application as NewsApplication).component
     }
@@ -67,15 +69,32 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         auth = FirebaseAuth.getInstance()
         val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.sign_in_with_google))
+            .requestIdToken(getString(R.string.google_auth_id))
             .requestEmail()
             .build()
         signInClient = GoogleSignIn.getClient(requireActivity(), options)
 
+        val resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                Log.d("LoginFragment", "I am not succeeded yet ${result.resultCode}")
+                if (result.resultCode == Activity.RESULT_OK) {
+                    Log.d("LoginFragment", "I am in resulLauncher ")
+                    // There are no request codes
+                    val data: Intent? = result.data
+                    val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
+                    account?.let {
+                        Log.d("LoginFragment", it.toString())
+                        googleAuthForFirebase(it)
+                    }
+                }
+            }
+
         binding.apply {
             btnGoogleSignIn.setOnClickListener {
+                Log.d("LoginFragment", "Button is clicked ")
                 signInClient.signInIntent.also {
-                    startActivityForResult(it, 0)
+                    Log.d("LoginFragment", "Sign in intent ")
+                    resultLauncher.launch(it)
                 }
             }
             btnLogin.setOnClickListener {
@@ -114,26 +133,24 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun googleAuthForFirebase(account: GoogleSignInAccount) {
+        setLoading(true)
         val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                auth.signInWithCredential(credentials).addOnSuccessListener {
-                    Toast.makeText(requireActivity(), "blabla", Toast.LENGTH_SHORT).show()
+                auth.signInWithCredential(credentials).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToFragmentGlobalContainer())
+                        Toast.makeText(requireContext(), "Success Google", Toast.LENGTH_SHORT)
+                            .show()
+                        setLoading(false)
+                    } else {
+                        Toast.makeText(requireContext(), task.exception?.message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireActivity(), e.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 }
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == 0) {
-            val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
-            account?.let {
-                googleAuthForFirebase(it)
             }
         }
     }
