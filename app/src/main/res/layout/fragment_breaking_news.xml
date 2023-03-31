@@ -32,9 +32,9 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_logo_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_app_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -63,12 +63,11 @@
         app:layout_constraintTop_toBottomOf="@id/app_bar"
         app:layout_constraintBottom_toTopOf="@id/rvBreakingNews"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="12dp"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:fontFamily="@font/poppins_regular"
-        android:textStyle="bold"
+        android:fontFamily="@font/poppins_bold"
         android:text="@string/text_top_news"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -90,10 +89,10 @@
         android:text="@string/text_categories"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/poppins_bold"
         android:textStyle="bold"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvBreakingNews"
         app:layout_constraintBottom_toTopOf="@+id/tabCategoryLayout"/>
