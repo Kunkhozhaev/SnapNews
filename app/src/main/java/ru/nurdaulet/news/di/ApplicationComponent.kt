@@ -7,6 +7,8 @@ import ru.nurdaulet.news.ui.fragments.article.ArticleFragment
 import ru.nurdaulet.news.ui.fragments.auth.login.LoginFragment
 import ru.nurdaulet.news.ui.fragments.auth.signup.SignUpFragment
 import ru.nurdaulet.news.ui.fragments.breaking.BreakingNewsFragment
+import ru.nurdaulet.news.ui.fragments.profile.EditProfileFragment
+import ru.nurdaulet.news.ui.fragments.profile.ProfileFragment
 import ru.nurdaulet.news.ui.fragments.saved_articles.SavedNewsFragment
 import ru.nurdaulet.news.ui.fragments.search.SearchNewsFragment
 
@@ -19,6 +21,8 @@ interface ApplicationComponent {
     fun inject(fragment: SearchNewsFragment)
     fun inject(fragment: LoginFragment)
     fun inject(fragment: SignUpFragment)
+    fun inject(fragment: ProfileFragment)
+    fun inject(fragment: EditProfileFragment)
 
     @Component.Factory
     interface ApplicationComponentFactory {

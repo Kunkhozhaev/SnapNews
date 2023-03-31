@@ -8,6 +8,8 @@ import ru.nurdaulet.news.ui.fragments.article.ArticleViewModel
 import ru.nurdaulet.news.ui.fragments.auth.login.LoginViewModel
 import ru.nurdaulet.news.ui.fragments.auth.signup.SignUpViewModel
 import ru.nurdaulet.news.ui.fragments.breaking.BreakingNewsViewModel
+import ru.nurdaulet.news.ui.fragments.profile.EditProfileViewModel
+import ru.nurdaulet.news.ui.fragments.profile.ProfileViewModel
 import ru.nurdaulet.news.ui.fragments.saved_articles.SavedNewsViewModel
 import ru.nurdaulet.news.ui.fragments.search.SearchNewsViewModel
 
@@ -43,4 +45,14 @@ interface ViewModelModule {
     @ViewModelKey(SignUpViewModel::class)
     @Binds
     fun bindSignUpViewModel(impl: SignUpViewModel): ViewModel
+
+    @IntoMap
+    @ViewModelKey(ProfileViewModel::class)
+    @Binds
+    fun bindProfileViewModel(impl: ProfileViewModel): ViewModel
+
+    @IntoMap
+    @ViewModelKey(EditProfileViewModel::class)
+    @Binds
+    fun bindEditProfileViewModel(impl: EditProfileViewModel): ViewModel
 }

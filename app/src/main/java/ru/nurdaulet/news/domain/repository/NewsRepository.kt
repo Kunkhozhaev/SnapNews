@@ -1,9 +1,11 @@
 package ru.nurdaulet.news.domain.repository
 
 import androidx.lifecycle.LiveData
+import com.google.firebase.auth.AuthCredential
 import retrofit2.Response
 import ru.nurdaulet.news.domain.models.Article
 import ru.nurdaulet.news.domain.models.NewsResponse
+import ru.nurdaulet.news.domain.models.User
 
 interface NewsRepository {
     suspend fun getBreakingNews(countryCode: String, pageNumber: Int): Response<NewsResponse>
@@ -29,11 +31,27 @@ interface NewsRepository {
         onFailure: (msg: String?) -> Unit
     )
 
+    suspend fun googleSignIn(
+        credentials: AuthCredential,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    )
+
     suspend fun signUp(
-        username: String,
         email: String,
         password: String,
         onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    )
+
+    suspend fun addUserToDb(
+        username: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    )
+
+    suspend fun getProfileData(
+        onSuccess: (user: User) -> Unit,
         onFailure: (msg: String?) -> Unit
     )
 }

@@ -13,17 +13,30 @@ class SignUpViewModel @Inject constructor(
     private val newsRepository: NewsRepository
 ) : ViewModel() {
 
-    private var _signIn: MutableLiveData<Resource<Any?>> = MutableLiveData()
-    val sigInStatus: LiveData<Resource<Any?>> get() = _signIn
+    private var _signUp: MutableLiveData<Resource<Any?>> = MutableLiveData()
+    val signUpStatus: LiveData<Resource<Any?>> get() = _signUp
 
-    fun signUp(username: String, mail: String, password: String) = viewModelScope.launch{
-        _signIn.value = Resource.Loading()
-        newsRepository.signUp(username, mail, password,
+    private var _userAddStatus: MutableLiveData<Resource<Any?>> = MutableLiveData()
+    val userAddStatus: LiveData<Resource<Any?>> get() = _userAddStatus
+
+    fun signUp(mail: String, password: String) = viewModelScope.launch{
+        _signUp.value = Resource.Loading()
+        newsRepository.signUp(mail, password,
             {
-                _signIn.value = Resource.Success(null)
+                _signUp.value = Resource.Success(null)
             },
             {
-                _signIn.value = Resource.Error(it)
+                _signUp.value = Resource.Error(it)
+            })
+    }
+    fun addUserToDb(username: String) = viewModelScope.launch {
+        _userAddStatus.value = Resource.Loading()
+        newsRepository.addUserToDb(username,
+            {
+                _userAddStatus.value = Resource.Success(null)
+            },
+            {
+                _userAddStatus.value = Resource.Error(it)
             })
     }
 }

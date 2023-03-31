@@ -2,6 +2,7 @@ package ru.nurdaulet.news.ui.fragments.auth.signup
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +58,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             btnSignUp.setOnClickListener {
                 if (validateSignUpInput()) {
                     viewModel.signUp(
-                        etUserName.text.toString(),
+                        //etUserName.text.toString(),
                         etEmail.text.toString(),
                         etPassword.text.toString()
                     )
@@ -73,7 +74,28 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     }
 
     private fun setupSignUpObserver() {
-        viewModel.sigInStatus.observe(viewLifecycleOwner) { response ->
+        viewModel.signUpStatus.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    setLoading(false)
+                    viewModel.addUserToDb(binding.etUserName.text.toString())
+                    setupAddUserObserver()
+                }
+                is Resource.Error -> {
+                    setLoading(false)
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is Resource.Loading -> {
+                    setLoading(true)
+                }
+            }
+        }
+    }
+    private fun setupAddUserObserver() {
+        viewModel.userAddStatus.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     setLoading(false)
@@ -84,6 +106,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                     response.message?.let { message ->
                         Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
                             .show()
+                        Log.d("SignUpFragment", message)
                     }
                 }
                 is Resource.Loading -> {

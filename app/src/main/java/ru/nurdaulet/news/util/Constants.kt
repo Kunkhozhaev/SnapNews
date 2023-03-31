@@ -19,5 +19,6 @@ object Constants {
         "technology"
     )
     const val COUNTRY_CODE = "us"
+    const val FIREBASE_USERS = "USERS"
 
 }

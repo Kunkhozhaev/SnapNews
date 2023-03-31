@@ -4,11 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -18,7 +18,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,8 +40,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private val binding: FragmentLoginBinding
         get() = _binding ?: throw RuntimeException("binding == null")
 
-    private lateinit var auth: FirebaseAuth
     private lateinit var signInClient: GoogleSignInClient
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     private val component by lazy {
         (requireActivity().application as NewsApplication).component
@@ -67,33 +66,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         //TODO navcontroller
         viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
 
-        auth = FirebaseAuth.getInstance()
-        val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.google_auth_id))
-            .requestEmail()
-            .build()
-        signInClient = GoogleSignIn.getClient(requireActivity(), options)
-
-        val resultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                Log.d("LoginFragment", "I am not succeeded yet ${result.resultCode}")
-                if (result.resultCode == Activity.RESULT_OK) {
-                    Log.d("LoginFragment", "I am in resulLauncher ")
-                    // There are no request codes
-                    val data: Intent? = result.data
-                    val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
-                    account?.let {
-                        Log.d("LoginFragment", it.toString())
-                        googleAuthForFirebase(it)
-                    }
-                }
-            }
-
+        initGoogleSignInOptions()
         binding.apply {
             btnGoogleSignIn.setOnClickListener {
-                Log.d("LoginFragment", "Button is clicked ")
                 signInClient.signInIntent.also {
-                    Log.d("LoginFragment", "Sign in intent ")
                     resultLauncher.launch(it)
                 }
             }
@@ -107,26 +83,74 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSignUpFragment())
             }
         }
-
         setupLoginObserver()
     }
 
-    private fun setupLoginObserver() {
-        viewModel.loginStatus.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is Resource.Success -> {
-                    setLoading(false)
-                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToFragmentGlobalContainer())
-                }
-                is Resource.Error -> {
-                    setLoading(false)
-                    response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
-                            .show()
+    private fun initGoogleSignInOptions() {
+        val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.google_auth_id))
+            .requestEmail()
+            .build()
+        signInClient = GoogleSignIn.getClient(requireActivity(), options)
+
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
+                    account?.let {
+                        googleAuthForFirebase(it)
                     }
                 }
-                is Resource.Loading -> {
-                    setLoading(true)
+            }
+    }
+
+    private fun setupLoginObserver() {
+        viewModel.apply {
+            loginStatus.observe(viewLifecycleOwner) { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        setLoading(false)
+                        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToFragmentGlobalContainer())
+                    }
+                    is Resource.Error -> {
+                        setLoading(false)
+                        response.message?.let { message ->
+                            Toast.makeText(
+                                activity,
+                                "An error occurred: $message",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                    }
+                    is Resource.Loading -> {
+                        setLoading(true)
+                    }
+                }
+            }
+            googleSignInStatus.observe(viewLifecycleOwner) { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        setLoading(false)
+                        // TODO Add user to list after Google Sign-In
+                        //viewModel.addUserToDb()
+                        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToFragmentGlobalContainer())
+                    }
+                    is Resource.Error -> {
+                        setLoading(false)
+                        response.message?.let { message ->
+                            Toast.makeText(
+                                activity,
+                                "An error occurred: $message",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                    }
+                    is Resource.Loading -> {
+                        setLoading(true)
+                    }
                 }
             }
         }
@@ -137,16 +161,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                auth.signInWithCredential(credentials).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToFragmentGlobalContainer())
-                        Toast.makeText(requireContext(), "Success Google", Toast.LENGTH_SHORT)
-                            .show()
-                        setLoading(false)
-                    } else {
-                        Toast.makeText(requireContext(), task.exception?.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
+                viewModel.googleSignIn(credentials)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
