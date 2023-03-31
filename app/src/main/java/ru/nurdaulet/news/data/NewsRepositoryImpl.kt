@@ -78,4 +78,8 @@ class NewsRepositoryImpl @Inject constructor(
     ) {
         profile.getProfileData(onSuccess, onFailure)
     }
+
+    override suspend fun signOut(onSuccess: () -> Unit, onFailure: (msg: String?) -> Unit) {
+        auth.signOut(onSuccess, onFailure)
+    }
 }

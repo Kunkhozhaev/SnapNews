@@ -61,4 +61,11 @@ class AuthFirebase @Inject constructor(
                 onFailure.invoke(it.localizedMessage)
             }
     }
+
+    fun signOut(
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    ) {
+        auth.signOut()
+    }
 }

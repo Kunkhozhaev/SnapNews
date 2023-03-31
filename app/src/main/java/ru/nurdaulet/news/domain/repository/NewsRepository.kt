@@ -54,4 +54,9 @@ interface NewsRepository {
         onSuccess: (user: User) -> Unit,
         onFailure: (msg: String?) -> Unit
     )
+
+    suspend fun signOut(
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    )
 }

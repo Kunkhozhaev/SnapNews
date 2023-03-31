@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
@@ -90,7 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/poppins_regular"
-        android:text="@string/tvProfileName"
+        tools:text="@string/tvProfileName"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -102,7 +103,7 @@
         android:id="@+id/tvUserMail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tvProfileMail"
+        tools:text="@string/tvProfileMail"
         android:textColor="@color/gray"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

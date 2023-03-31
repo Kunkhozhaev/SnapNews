@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -15,6 +16,7 @@ import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.databinding.FragmentProfileInfoBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainer
+import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainerDirections
 import ru.nurdaulet.news.util.Resource
 import javax.inject.Inject
 
@@ -49,15 +51,21 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        parentNavController =
+            (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
         viewModel = ViewModelProvider(this, viewModelFactory)[ProfileViewModel::class.java]
         viewModel.getProfileData()
         setupProfileDataObserver()
+        setupSignOutObserver()
 
         binding.btnEditProfile.setOnClickListener {
-            parentNavController =
-                (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
             parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_editProfileFragment)
         }
+        binding.btnLogOut.setOnClickListener {
+            //TODO signOut Observer with sealed class
+            viewModel.signOut()
+        }
+
     }
 
     private fun setupProfileDataObserver() {
@@ -80,6 +88,33 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
                 is Resource.Loading -> {
                 }
             }
+        }
+    }
+
+    private fun setupSignOutObserver() {
+        viewModel.signOutStatus.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    setLoading(false)
+                    parentNavController.navigate(FragmentGlobalContainerDirections.actionFragmentGlobalContainerToLoginFragment())
+                }
+                is Resource.Error -> {
+                    setLoading(false)
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is Resource.Loading -> {
+                    setLoading(true)
+                }
+            }
+        }
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        binding.apply {
+            progressBar.isVisible = isLoading
         }
     }
 
