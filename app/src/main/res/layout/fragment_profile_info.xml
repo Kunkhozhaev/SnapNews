@@ -75,4 +75,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvUserMail" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSettingsProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginHorizontal="24dp"
+        android:background="@drawable/bg_settings_btn"
+        android:drawableStart="@drawable/ic_settings"
+        android:drawableEnd="@drawable/ic_arrow_forward"
+        android:drawablePadding="16dp"
+        android:gravity="center|start"
+        android:paddingStart="8dp"
+        android:textAllCaps="false"
+        android:fontFamily="@font/poppins_regular"
+        android:paddingEnd="12dp"
+        android:textColor="@color/black"
+        android:text="@string/settingsBtnText"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEditProfile" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLogOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="24dp"
+        android:background="@drawable/bg_settings_btn"
+        android:drawableStart="@drawable/ic_log_out"
+        android:drawablePadding="16dp"
+        android:gravity="center|start"
+        android:paddingStart="8dp"
+        android:textAllCaps="false"
+        android:fontFamily="@font/poppins_regular"
+        android:paddingEnd="12dp"
+        android:textColor="@color/red_bold"
+        android:text="@string/logoutBtnText"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSettingsProfile" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
