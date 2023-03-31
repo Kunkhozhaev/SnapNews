@@ -2,7 +2,7 @@ package ru.nurdaulet.news.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.google.firebase.auth.AuthCredential
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import ru.nurdaulet.news.data.database.ArticleDao
 import ru.nurdaulet.news.data.database.ArticleModelMapper
 import ru.nurdaulet.news.data.network.AuthFirebase
@@ -48,11 +48,11 @@ class NewsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun googleSignIn(
-        credentials: AuthCredential,
+        account: GoogleSignInAccount,
         onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
-        auth.googleSignIn(credentials, onSuccess, onFailure)
+        auth.googleSignIn(account, onSuccess, onFailure)
     }
 
     override suspend fun signUp(

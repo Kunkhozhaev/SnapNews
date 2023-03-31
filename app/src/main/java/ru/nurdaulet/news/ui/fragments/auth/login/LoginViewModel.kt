@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.AuthCredential
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kotlinx.coroutines.launch
 import ru.nurdaulet.news.domain.repository.NewsRepository
 import ru.nurdaulet.news.util.Resource
@@ -20,9 +20,6 @@ class LoginViewModel @Inject constructor(
     private var _googleSignIn: MutableLiveData<Resource<Any?>> = MutableLiveData()
     val googleSignInStatus: LiveData<Resource<Any?>> get() = _googleSignIn
 
-    private var _userAddStatus: MutableLiveData<Resource<Any?>> = MutableLiveData()
-    val userAddStatus: LiveData<Resource<Any?>> get() = _userAddStatus
-
     fun login(mail: String, password: String) = viewModelScope.launch {
         _login.value = Resource.Loading()
         newsRepository.login(mail, password,
@@ -33,24 +30,15 @@ class LoginViewModel @Inject constructor(
                 _login.value = Resource.Error(it)
             })
     }
-    fun googleSignIn(credential: AuthCredential) = viewModelScope.launch {
+
+    fun googleSignIn(account: GoogleSignInAccount) = viewModelScope.launch {
         _googleSignIn.value = Resource.Loading()
-        newsRepository.googleSignIn(credential,
+        newsRepository.googleSignIn(account,
             {
                 _googleSignIn.value = Resource.Success(null)
             },
             {
                 _googleSignIn.value = Resource.Error(it)
-            })
-    }
-    fun addUserToDb(username: String) = viewModelScope.launch {
-        _userAddStatus.value = Resource.Loading()
-        newsRepository.addUserToDb(username,
-            {
-                _userAddStatus.value = Resource.Success(null)
-            },
-            {
-                _userAddStatus.value = Resource.Error(it)
             })
     }
 }

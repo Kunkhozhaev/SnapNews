@@ -15,14 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.databinding.FragmentLoginBinding
@@ -99,7 +93,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     val data: Intent? = result.data
                     val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
                     account?.let {
-                        googleAuthForFirebase(it)
+                        viewModel.googleSignIn(it)
                     }
                 }
             }
@@ -133,8 +127,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 when (response) {
                     is Resource.Success -> {
                         setLoading(false)
-                        // TODO Add user to list after Google Sign-In
-                        //viewModel.addUserToDb()
                         findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToFragmentGlobalContainer())
                     }
                     is Resource.Error -> {
@@ -151,20 +143,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     is Resource.Loading -> {
                         setLoading(true)
                     }
-                }
-            }
-        }
-    }
-
-    private fun googleAuthForFirebase(account: GoogleSignInAccount) {
-        setLoading(true)
-        val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                viewModel.googleSignIn(credentials)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }

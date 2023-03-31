@@ -1,7 +1,7 @@
 package ru.nurdaulet.news.domain.repository
 
 import androidx.lifecycle.LiveData
-import com.google.firebase.auth.AuthCredential
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import retrofit2.Response
 import ru.nurdaulet.news.domain.models.Article
 import ru.nurdaulet.news.domain.models.NewsResponse
@@ -32,7 +32,7 @@ interface NewsRepository {
     )
 
     suspend fun googleSignIn(
-        credentials: AuthCredential,
+        account: GoogleSignInAccount,
         onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     )
