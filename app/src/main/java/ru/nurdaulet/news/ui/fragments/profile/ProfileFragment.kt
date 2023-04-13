@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.app.NewsApplication
+import ru.nurdaulet.news.data.shared_pref.SharedPref
 import ru.nurdaulet.news.databinding.FragmentProfileInfoBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainer
@@ -21,6 +22,9 @@ import ru.nurdaulet.news.util.Resource
 import javax.inject.Inject
 
 class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
+
+    @Inject
+    lateinit var sharedPref: SharedPref
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -54,6 +58,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
         parentNavController =
             (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
         viewModel = ViewModelProvider(this, viewModelFactory)[ProfileViewModel::class.java]
+        binding.tvUserName.text = sharedPref.username
+        binding.tvUserMail.text = sharedPref.email
         viewModel.getProfileData()
         setupProfileDataObserver()
         setupSignOutObserver()
@@ -62,8 +68,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
             parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_editProfileFragment)
         }
         binding.btnLogOut.setOnClickListener {
-            //TODO signOut Observer with sealed class
+            //TODO signOut Observer with sealed class or use FirebaseAuth.AuthStateListener
             viewModel.signOut()
+            /*parentNavController.navigate(
+                FragmentGlobalContainerDirections.actionFragmentGlobalContainerToLoginFragment()
+            )*/
         }
 
     }
@@ -73,7 +82,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
             when (response) {
                 is Resource.Success -> {
                     binding.apply {
-                        response.data?.let {user ->
+                        response.data?.let { user ->
                             tvUserName.text = user.username
                             tvUserMail.text = user.email
                         }

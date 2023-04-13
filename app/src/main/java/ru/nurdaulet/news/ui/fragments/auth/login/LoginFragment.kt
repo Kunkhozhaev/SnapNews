@@ -19,12 +19,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.app.NewsApplication
+import ru.nurdaulet.news.data.shared_pref.SharedPref
 import ru.nurdaulet.news.databinding.FragmentLoginBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.util.Resource
 import javax.inject.Inject
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
+
+    @Inject
+    lateinit var sharedPref: SharedPref
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -93,7 +97,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     val data: Intent? = result.data
                     val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
                     account?.let {
-                        viewModel.googleSignIn(it)
+                        viewModel.googleSignIn(it, signInClient)
                     }
                 }
             }
@@ -105,6 +109,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 when (response) {
                     is Resource.Success -> {
                         setLoading(false)
+                        sharedPref.isSigned = true
+                        sharedPref.isGoogleSigned = false
                         findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToFragmentGlobalContainer())
                     }
                     is Resource.Error -> {
@@ -127,6 +133,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 when (response) {
                     is Resource.Success -> {
                         setLoading(false)
+                        sharedPref.isGoogleSigned = true
+                        sharedPref.isSigned = false
                         findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToFragmentGlobalContainer())
                     }
                     is Resource.Error -> {
@@ -153,7 +161,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             val emailIsNotEmpty = etEmail.text!!.isNotEmpty()
             val passwordIsNotEmpty = etPassword.text!!.isNotEmpty()
             val passwordLengthIsValid = etPassword.length() >= 8
-            //TODO error observers
+            //TODO error observer text and state changes
 
             return if (emailIsNotEmpty
                 && passwordIsNotEmpty

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.app.NewsApplication
+import ru.nurdaulet.news.data.shared_pref.SharedPref
 import ru.nurdaulet.news.databinding.FragmentEditProfileBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.util.Resource
@@ -18,6 +19,8 @@ import javax.inject.Inject
 
 class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
+    @Inject
+    lateinit var sharedPref: SharedPref
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -49,6 +52,12 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this, viewModelFactory)[EditProfileViewModel::class.java]
+        binding.apply {
+            tvUserName.text = sharedPref.username
+            tvUserMail.text = sharedPref.email
+            etFullName.setText(sharedPref.username)
+            etEmail.setText(sharedPref.email)
+        }
         viewModel.getProfileData()
         setupProfileDataObserver()
 

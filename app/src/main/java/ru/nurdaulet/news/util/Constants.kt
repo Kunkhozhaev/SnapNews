@@ -1,5 +1,7 @@
 package ru.nurdaulet.news.util
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+
 object Constants {
     // main api: 758e97e2b2bd4b4497f5cdf3c26c8a6d
     // 2nd api: df13f3a9fed848b19e03519de8217715
@@ -7,9 +9,10 @@ object Constants {
     const val API_KEY = "df13f3a9fed848b19e03519de8217715"
     const val BASE_URL = "https://newsapi.org"
     const val QUERY_PAGE_SIZE = 20
+
     //first "1" is to overcome int rounding and second "1" is that last response is empty
     const val PAGE_OFFSET = 1 + 1
-    val listOfCategories  = mutableListOf(
+    val listOfCategories = mutableListOf(
         "business",
         "entertainment",
         "general",
@@ -20,5 +23,9 @@ object Constants {
     )
     const val COUNTRY_CODE = "us"
     const val FIREBASE_USERS = "USERS"
+    const val SHARED_PREFS = "shared_prefs"
+
+    // TODO fix this foolish method to save google clients
+    val currentSignInClient = mutableListOf<GoogleSignInClient>()
 
 }

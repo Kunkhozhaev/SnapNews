@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.coroutines.launch
 import ru.nurdaulet.news.domain.repository.NewsRepository
 import ru.nurdaulet.news.util.Resource
@@ -31,9 +32,10 @@ class LoginViewModel @Inject constructor(
             })
     }
 
-    fun googleSignIn(account: GoogleSignInAccount) = viewModelScope.launch {
+    fun googleSignIn(account: GoogleSignInAccount, signInClient: GoogleSignInClient) = viewModelScope.launch {
         _googleSignIn.value = Resource.Loading()
         newsRepository.googleSignIn(account,
+            signInClient,
             {
                 _googleSignIn.value = Resource.Success(null)
             },
