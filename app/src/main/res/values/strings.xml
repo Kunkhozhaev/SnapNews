@@ -50,4 +50,7 @@
     <string name="google_auth_id">201600956776-4ppp6ol5kkamv84bpisot5nq0colc0pb.apps.googleusercontent.com</string>
     <string name="settingsBtnText">Settings</string>
     <string name="logoutBtnText">Log out</string>
+    <string name="welcome_text">Welcome to SnapNews</string>
+    <string name="welcome_subtitle">Browse the latest news articles</string>
+    <string name="get_started_btn_text">Get Started</string>
 </resources>

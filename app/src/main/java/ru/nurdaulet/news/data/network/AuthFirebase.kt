@@ -21,6 +21,7 @@ class AuthFirebase @Inject constructor(
     //private val auth: FirebaseAuth,
     // private val db: FirebaseFirestore
 ) {
+    // TODO(Inject these)
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 

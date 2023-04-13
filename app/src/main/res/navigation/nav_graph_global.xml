@@ -31,7 +31,10 @@
             app:popExitAnim="@anim/slide_out"/>
         <action
             android:id="@+id/action_fragmentGlobalContainer_to_welcomeScreen"
-            app:destination="@id/welcomeScreen" />
+            app:destination="@id/welcomeScreen"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/news_nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -73,8 +76,11 @@
             app:destination="@id/fragmentGlobalContainer"
             app:enterAnim="@anim/slide_in"
             app:exitAnim="@anim/fade_out"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out"/>
+            app:popExitAnim="@anim/slide_out"
+            app:popUpTo="@id/news_nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -86,7 +92,8 @@
             app:enterAnim="@anim/slide_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out"/>
+            app:popExitAnim="@anim/slide_out"
+            app:popUpTo="@id/welcomeScreen" />
     </fragment>
     <fragment
         android:id="@+id/welcomeScreen"
@@ -102,10 +109,14 @@
         android:label="SplashScreen" >
         <action
             android:id="@+id/action_splashScreen_to_welcomeScreen"
-            app:destination="@id/welcomeScreen" />
+            app:destination="@id/welcomeScreen"
+            app:popUpTo="@id/splashScreen"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splashScreen_to_fragmentGlobalContainer"
-            app:destination="@id/fragmentGlobalContainer" />
+            app:destination="@id/fragmentGlobalContainer"
+            app:popUpTo="@id/splashScreen"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
 

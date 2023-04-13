@@ -48,7 +48,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[SignUpViewModel::class.java]
-        //TODO navcontroller
 
         binding.apply {
             iconBack.setOnClickListener {
