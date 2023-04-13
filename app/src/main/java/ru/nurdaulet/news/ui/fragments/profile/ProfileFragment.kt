@@ -105,7 +105,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
             when (response) {
                 is Resource.Success -> {
                     setLoading(false)
-                    parentNavController.navigate(FragmentGlobalContainerDirections.actionFragmentGlobalContainerToLoginFragment())
+                    parentNavController.navigate(FragmentGlobalContainerDirections.actionFragmentGlobalContainerToWelcomeScreen())
                 }
                 is Resource.Error -> {
                     setLoading(false)

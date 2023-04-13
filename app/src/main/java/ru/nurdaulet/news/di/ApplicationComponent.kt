@@ -11,6 +11,8 @@ import ru.nurdaulet.news.ui.fragments.profile.EditProfileFragment
 import ru.nurdaulet.news.ui.fragments.profile.ProfileFragment
 import ru.nurdaulet.news.ui.fragments.saved_articles.SavedNewsFragment
 import ru.nurdaulet.news.ui.fragments.search.SearchNewsFragment
+import ru.nurdaulet.news.ui.fragments.auth.login.WelcomeFragment
+import ru.nurdaulet.news.ui.splash_screen.SplashScreen
 
 @ApplicationScope
 @Component(modules = [DataModule::class, ViewModelModule::class])
@@ -23,6 +25,8 @@ interface ApplicationComponent {
     fun inject(fragment: SignUpFragment)
     fun inject(fragment: ProfileFragment)
     fun inject(fragment: EditProfileFragment)
+
+    fun inject(fragment: SplashScreen)
 
     @Component.Factory
     interface ApplicationComponentFactory {

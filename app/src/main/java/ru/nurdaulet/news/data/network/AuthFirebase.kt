@@ -100,15 +100,17 @@ class AuthFirebase @Inject constructor(
             auth.signOut()
             sharedPref.username = ""
             sharedPref.email = ""
+            sharedPref.isSigned = false
         } else if (sharedPref.isGoogleSigned) {
             currentSignInClient[0].signOut().addOnSuccessListener {
                 onSuccess.invoke()
-                sharedPref.username = ""
-                sharedPref.email = ""
             }.addOnFailureListener { exception ->
                 onFailure.invoke(exception.localizedMessage)
             }.addOnCompleteListener {
                 currentSignInClient.clear()
+                sharedPref.username = ""
+                sharedPref.email = ""
+                sharedPref.isGoogleSigned = false
             }
         }
     }

@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/news_nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/splashScreen">
 
     <fragment
         android:id="@+id/fragmentGlobalContainer"
@@ -30,8 +30,8 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out"/>
         <action
-            android:id="@+id/action_fragmentGlobalContainer_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_fragmentGlobalContainer_to_welcomeScreen"
+            app:destination="@id/welcomeScreen" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -87,13 +87,25 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out"/>
+    </fragment>
+    <fragment
+        android:id="@+id/welcomeScreen"
+        android:name="ru.nurdaulet.news.ui.fragments.auth.login.WelcomeFragment"
+        android:label="WelcomeScreen" >
         <action
-            android:id="@+id/action_signUpFragment_to_fragmentGlobalContainer"
-            app:destination="@id/fragmentGlobalContainer"
-            app:enterAnim="@anim/slide_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out"/>
+            android:id="@+id/action_welcomeScreen_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashScreen"
+        android:name="ru.nurdaulet.news.ui.splash_screen.SplashScreen"
+        android:label="SplashScreen" >
+        <action
+            android:id="@+id/action_splashScreen_to_welcomeScreen"
+            app:destination="@id/welcomeScreen" />
+        <action
+            android:id="@+id/action_splashScreen_to_fragmentGlobalContainer"
+            app:destination="@id/fragmentGlobalContainer" />
     </fragment>
 </navigation>
 
