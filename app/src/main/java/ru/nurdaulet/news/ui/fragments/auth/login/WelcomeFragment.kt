@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.ncorti.slidetoact.SlideToActView
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.databinding.FragmentWelcomeScreenBinding
 
@@ -29,8 +30,11 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome_screen) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button.setOnClickListener {
-            navController.navigate(WelcomeFragmentDirections.actionWelcomeScreenToLoginFragment())
+
+        binding.slideBtn.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
+            override fun onSlideComplete(view: SlideToActView) {
+                navController.navigate(WelcomeFragmentDirections.actionWelcomeScreenToLoginFragment())
+            }
         }
     }
 

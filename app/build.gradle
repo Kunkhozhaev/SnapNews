@@ -40,25 +40,25 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     //Firebase
-    implementation 'com.google.firebase:firebase-auth:21.2.0'
-    implementation 'com.google.firebase:firebase-firestore:24.4.5'
+    implementation 'com.google.firebase:firebase-auth:21.3.0'
+    implementation 'com.google.firebase:firebase-firestore:24.5.0'
     implementation 'com.google.firebase:firebase-storage:20.1.0'
 
     //Google Sign-in
-    implementation 'com.google.android.gms:play-services-auth:20.4.1'
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
 
     //Dagger 2
     implementation 'com.google.dagger:dagger:2.44.2'
-    kapt 'com.google.dagger:dagger-compiler:2.42'
+    kapt 'com.google.dagger:dagger-compiler:2.44.2'
 
     // Architectural Components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
@@ -93,4 +93,6 @@ dependencies {
 
     // Cardview
     implementation 'androidx.cardview:cardview:1.0.0'
+    // Slide-to-act view
+    implementation "com.ncorti:slidetoact:0.10.0"
 }

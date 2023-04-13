@@ -31,14 +31,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/get_started_btn_text"
+    <com.ncorti.slidetoact.SlideToActView
+        android:id="@+id/slide_btn"
+        android:layout_width="192dp"
+        android:layout_height="48dp"
+        android:elevation="4dp"
+        app:area_margin="4dp"
+        app:text="@string/get_started_btn_text"
+        app:text_size="16sp"
+        app:outer_color="@color/red_light"
+        app:inner_color="@color/white"
+        app:icon_margin="6dp"
+        app:animation_duration="250"
+        app:slider_locked="false"
+        app:bump_vibration="50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.850" />
+        app:layout_constraintVertical_bias="0.8"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
