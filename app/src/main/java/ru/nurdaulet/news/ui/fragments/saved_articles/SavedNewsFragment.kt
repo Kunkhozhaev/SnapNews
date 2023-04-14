@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -16,17 +18,20 @@ import com.google.android.material.snackbar.Snackbar
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.databinding.FragmentSavedNewsBinding
+import ru.nurdaulet.news.domain.models.Article
+import ru.nurdaulet.news.domain.models.Source
 import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.ui.adapters.NewsAdapter
 import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainer
 import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainerDirections
+import ru.nurdaulet.news.util.Resource
 import javax.inject.Inject
 
 class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val component by lazy{
+    private val component by lazy {
         (requireActivity().application as NewsApplication).component
     }
 
@@ -56,7 +61,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this, viewModelFactory)[SavedNewsViewModel::class.java]
-
+        viewModel.getSavedNews()
         parentNavController =
             (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
         setupRecyclerView()
@@ -65,7 +70,9 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
         newsAdapter.setOnArticleClickListener { article ->
             parentNavController.navigate(
-                FragmentGlobalContainerDirections.actionFragmentGlobalContainerToArticleFragment(article)
+                FragmentGlobalContainerDirections.actionFragmentGlobalContainerToArticleFragment(
+                    article
+                )
             )
         }
     }
@@ -103,11 +110,45 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
     }
 
     private fun setupGetSavedNewsObserve() {
-        viewModel.getSavedNews().observe(viewLifecycleOwner) { articles ->
-            val distinctArticles = articles.distinctBy {
-                it.title
+        viewModel.getSavedArticlesState.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    setLoading(false)
+                    response.data?.let { articles ->
+                        val distinctArticles = articles.distinctBy {
+                            it.title
+                        }
+                        val resultList = mutableListOf<Article>()
+                        distinctArticles.forEach { fireArticle ->
+                            val article = Article(
+                                null,
+                                null,
+                                null,
+                                null,
+                                fireArticle.publishedAt,
+                                Source(null, fireArticle.sourceName!!),
+                                fireArticle.title,
+                                fireArticle.url,
+                                fireArticle.urlToImage
+                            )
+                            resultList.add(article)
+                        }
+                        // TODO(Map FirebaseArticle to Article)
+
+                        newsAdapter.submitList(resultList)
+                    }
+                }
+                is Resource.Error -> {
+                    setLoading(false)
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is Resource.Loading -> {
+                    setLoading(true)
+                }
             }
-            newsAdapter.submitList(distinctArticles)
         }
     }
 
@@ -117,6 +158,12 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         binding.rvSavedNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
+        }
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        binding.apply {
+            paginationProgressBar.isVisible = isLoading
         }
     }
 

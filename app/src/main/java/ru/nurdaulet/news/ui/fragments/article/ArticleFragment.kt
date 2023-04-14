@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -18,6 +19,7 @@ import ru.nurdaulet.news.R
 import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.databinding.FragmentArticleBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
+import ru.nurdaulet.news.util.Resource
 import javax.inject.Inject
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
@@ -52,6 +54,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         super.onViewCreated(view, savedInstanceState)
         val article = args.article
         viewModel = ViewModelProvider(this, viewModelFactory)[ArticleViewModel::class.java]
+        setupArticleSaveObserver()
 
 
         binding.apply {
@@ -81,12 +84,38 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
             }
             ivSaveBtn.setOnClickListener {
                 viewModel.saveArticle(article)
-                Snackbar.make(view, "Article saved successfully", Snackbar.LENGTH_SHORT).show()
             }
             webView.apply {
                 webViewClient = WebViewClient()
                 loadUrl(article.url)
             }
+        }
+    }
+
+    private fun setupArticleSaveObserver() {
+        viewModel.saveArticleState.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    setLoading(false)
+                    Snackbar.make(binding.root, "Article saved successfully", Snackbar.LENGTH_SHORT).show()
+                }
+                is Resource.Error -> {
+                    setLoading(false)
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is Resource.Loading -> {
+                    setLoading(true)
+                }
+            }
+        }
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        binding.apply {
+            paginationProgressBar.isVisible = isLoading
         }
     }
 

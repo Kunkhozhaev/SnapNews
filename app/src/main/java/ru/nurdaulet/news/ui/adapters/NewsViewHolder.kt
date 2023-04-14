@@ -39,7 +39,6 @@ class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val secondApiFormat = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
         } else {
-            // TODO time
             TODO("VERSION.SDK_INT < O")
         }
 

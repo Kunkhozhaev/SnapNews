@@ -6,10 +6,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import ru.nurdaulet.news.data.database.ArticleDao
 import ru.nurdaulet.news.data.database.ArticleModelMapper
+import ru.nurdaulet.news.data.network.ArticleFirebase
 import ru.nurdaulet.news.data.network.AuthFirebase
 import ru.nurdaulet.news.data.network.ProfileFirebase
 import ru.nurdaulet.news.data.network.RetrofitInstance
 import ru.nurdaulet.news.domain.models.Article
+import ru.nurdaulet.news.domain.models.FirebaseArticle
 import ru.nurdaulet.news.domain.models.User
 import ru.nurdaulet.news.domain.repository.NewsRepository
 import javax.inject.Inject
@@ -19,6 +21,7 @@ class NewsRepositoryImpl @Inject constructor(
     private val mapper: ArticleModelMapper,
     private val auth: AuthFirebase,
     private val profile: ProfileFirebase,
+    private val articles: ArticleFirebase
 ) : NewsRepository {
 
     override suspend fun getBreakingNews(countryCode: String, pageNumber: Int) =
@@ -46,6 +49,21 @@ class NewsRepositoryImpl @Inject constructor(
         onFailure: (msg: String?) -> Unit
     ) {
         auth.login(email, password, onSuccess, onFailure)
+    }
+
+    override suspend fun saveArticle(
+        article: Article,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    ) {
+        articles.saveArticleToDb(article, onSuccess, onFailure)
+    }
+
+    override suspend fun getSavedArticles(
+        onSuccess: (articles: List<FirebaseArticle>) -> Unit,
+        onFailure: (msg: String?) -> Unit
+    ) {
+        articles.getSavedArticles(onSuccess, onFailure)
     }
 
     override suspend fun googleSignIn(

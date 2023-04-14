@@ -23,6 +23,8 @@ object Constants {
     )
     const val COUNTRY_CODE = "us"
     const val FIREBASE_USERS = "USERS"
+    const val FIREBASE_SAVED_ARTICLES = "SAVED_ARTICLES"
+    const val FIREBASE_USER_ID = "userId"
     const val SHARED_PREFS = "shared_prefs"
 
     // TODO fix this foolish method to save google clients

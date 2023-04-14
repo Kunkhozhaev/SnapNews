@@ -5,6 +5,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import retrofit2.Response
 import ru.nurdaulet.news.domain.models.Article
+import ru.nurdaulet.news.domain.models.FirebaseArticle
 import ru.nurdaulet.news.domain.models.NewsResponse
 import ru.nurdaulet.news.domain.models.User
 
@@ -22,6 +23,17 @@ interface NewsRepository {
     suspend fun upsert(article: Article): Long
 
     fun getSavedNews(): LiveData<List<Article>>
+
+    suspend fun saveArticle(
+        article: Article,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    )
+
+    suspend fun getSavedArticles(
+        onSuccess: (articles: List<FirebaseArticle>) -> Unit,
+        onFailure: (msg: String?) -> Unit
+    )
 
     suspend fun deleteArticle(article: Article)
 
