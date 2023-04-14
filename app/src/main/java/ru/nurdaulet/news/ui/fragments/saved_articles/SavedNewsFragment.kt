@@ -118,24 +118,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
                         val distinctArticles = articles.distinctBy {
                             it.title
                         }
-                        val resultList = mutableListOf<Article>()
-                        distinctArticles.forEach { fireArticle ->
-                            val article = Article(
-                                null,
-                                null,
-                                null,
-                                null,
-                                fireArticle.publishedAt,
-                                Source(null, fireArticle.sourceName!!),
-                                fireArticle.title,
-                                fireArticle.url,
-                                fireArticle.urlToImage
-                            )
-                            resultList.add(article)
-                        }
-                        // TODO(Map FirebaseArticle to Article)
-
-                        newsAdapter.submitList(resultList)
+                        newsAdapter.submitList(distinctArticles)
                     }
                 }
                 is Resource.Error -> {

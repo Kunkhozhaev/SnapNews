@@ -15,16 +15,26 @@ class SavedNewsViewModel @Inject constructor(
     private val newsRepository: NewsRepository
 ) : ViewModel() {
 
-    fun saveArticle(article: Article) = viewModelScope.launch {
-        newsRepository.upsert(article)
-    }
-
     fun deleteArticle(article: Article) = viewModelScope.launch {
         newsRepository.deleteArticle(article)
     }
 
-    private var _getSavedArticlesState: MutableLiveData<Resource<List<FirebaseArticle>?>> = MutableLiveData()
-    val getSavedArticlesState: LiveData<Resource<List<FirebaseArticle>?>> get() = _getSavedArticlesState
+    private var _saveArticleState: MutableLiveData<Resource<Any?>> = MutableLiveData()
+    val saveArticleState: LiveData<Resource<Any?>> get() = _saveArticleState
+
+    fun saveArticle(article: Article) = viewModelScope.launch {
+        _saveArticleState.value = Resource.Loading()
+        newsRepository.saveArticle(article,
+            {
+                _saveArticleState.value = Resource.Success(null)
+            },
+            {
+                _saveArticleState.value = Resource.Error(it)
+            })
+    }
+
+    private var _getSavedArticlesState: MutableLiveData<Resource<List<Article>?>> = MutableLiveData()
+    val getSavedArticlesState: LiveData<Resource<List<Article>?>> get() = _getSavedArticlesState
 
     fun getSavedNews() = viewModelScope.launch {
         _getSavedArticlesState.value = Resource.Loading()

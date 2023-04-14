@@ -31,7 +31,7 @@ interface NewsRepository {
     )
 
     suspend fun getSavedArticles(
-        onSuccess: (articles: List<FirebaseArticle>) -> Unit,
+        onSuccess: (articles: List<Article>) -> Unit,
         onFailure: (msg: String?) -> Unit
     )
 

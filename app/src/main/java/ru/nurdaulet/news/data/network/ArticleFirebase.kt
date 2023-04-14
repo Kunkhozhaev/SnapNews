@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import ru.nurdaulet.news.domain.models.Article
 import ru.nurdaulet.news.domain.models.FirebaseArticle
+import ru.nurdaulet.news.domain.models.Source
 import ru.nurdaulet.news.util.Constants
 import java.util.*
 import javax.inject.Inject
@@ -39,18 +40,30 @@ class ArticleFirebase @Inject constructor(
     }
 
     fun getSavedArticles(
-        onSuccess: (articles: List<FirebaseArticle>) -> Unit,
+        onSuccess: (articles: List<Article>) -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
         val userId = auth.currentUser!!.uid
-        val resultList = mutableListOf<FirebaseArticle>()
+        val resultList = mutableListOf<Article>()
         db.collection(Constants.FIREBASE_SAVED_ARTICLES).get()
             .addOnSuccessListener {
                 for (index in 0 until it.documents.size) {
                     if (it.documents[index].get(Constants.FIREBASE_USER_ID) == userId) {
                         val fireArticle = it.documents[index].toObject(FirebaseArticle::class.java)
                         fireArticle?.let { article ->
-                            resultList.add(article)
+                            resultList.add(
+                                Article(
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    article.publishedAt,
+                                    Source(null, article.sourceName!!),
+                                    article.title,
+                                    article.url,
+                                    article.urlToImage
+                                )
+                            )
                         }
                     }
                 }

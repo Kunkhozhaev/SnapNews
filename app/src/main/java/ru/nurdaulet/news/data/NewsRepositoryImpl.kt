@@ -60,7 +60,7 @@ class NewsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getSavedArticles(
-        onSuccess: (articles: List<FirebaseArticle>) -> Unit,
+        onSuccess: (articles: List<Article>) -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
         articles.getSavedArticles(onSuccess, onFailure)
