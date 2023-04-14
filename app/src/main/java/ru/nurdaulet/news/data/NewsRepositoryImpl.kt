@@ -11,7 +11,6 @@ import ru.nurdaulet.news.data.network.AuthFirebase
 import ru.nurdaulet.news.data.network.ProfileFirebase
 import ru.nurdaulet.news.data.network.RetrofitInstance
 import ru.nurdaulet.news.domain.models.Article
-import ru.nurdaulet.news.domain.models.FirebaseArticle
 import ru.nurdaulet.news.domain.models.User
 import ru.nurdaulet.news.domain.repository.NewsRepository
 import javax.inject.Inject
@@ -40,7 +39,13 @@ class NewsRepositoryImpl @Inject constructor(
         mapper.mapListDbModelToListEntity(it)
     }
 
-    override suspend fun deleteArticle(article: Article) = articleDao.deleteArticle(article.title)
+    override suspend fun deleteArticle(
+        article: Article,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    ) {
+        articles.deleteArticle(article, onSuccess, onFailure)
+    }
 
     override suspend fun login(
         email: String,

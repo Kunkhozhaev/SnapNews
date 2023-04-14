@@ -39,32 +39,52 @@ class ArticleFirebase @Inject constructor(
             }
     }
 
+    fun deleteArticle(
+        article: Article,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    ) {
+        val userId = auth.currentUser!!.uid
+        db.collection(Constants.FIREBASE_SAVED_ARTICLES)
+            .whereEqualTo(Constants.FIREBASE_USER_ID_FIELD, userId)
+            .whereEqualTo(Constants.FIREBASE_TITLE_FIELD, article.title)
+            .get()
+            .addOnSuccessListener {
+                it.documents.map { doc ->
+                    doc.reference.delete()
+                }
+                onSuccess.invoke()
+            }
+            .addOnFailureListener {
+                onFailure.invoke(it.localizedMessage)
+            }
+    }
+
     fun getSavedArticles(
         onSuccess: (articles: List<Article>) -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
         val userId = auth.currentUser!!.uid
         val resultList = mutableListOf<Article>()
-        db.collection(Constants.FIREBASE_SAVED_ARTICLES).get()
+        db.collection(Constants.FIREBASE_SAVED_ARTICLES)
+            .whereEqualTo(Constants.FIREBASE_USER_ID_FIELD, userId).get()
             .addOnSuccessListener {
-                for (index in 0 until it.documents.size) {
-                    if (it.documents[index].get(Constants.FIREBASE_USER_ID) == userId) {
-                        val fireArticle = it.documents[index].toObject(FirebaseArticle::class.java)
-                        fireArticle?.let { article ->
-                            resultList.add(
-                                Article(
-                                    null,
-                                    null,
-                                    null,
-                                    null,
-                                    article.publishedAt,
-                                    Source(null, article.sourceName!!),
-                                    article.title,
-                                    article.url,
-                                    article.urlToImage
-                                )
+                it.documents.map { doc ->
+                    val fireArticle = doc.toObject(FirebaseArticle::class.java)
+                    fireArticle?.let { article ->
+                        resultList.add(
+                            Article(
+                                null,
+                                null,
+                                null,
+                                null,
+                                article.publishedAt,
+                                Source(null, article.sourceName!!),
+                                article.title,
+                                article.url,
+                                article.urlToImage
                             )
-                        }
+                        )
                     }
                 }
                 onSuccess.invoke(resultList)

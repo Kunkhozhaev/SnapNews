@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.nurdaulet.news.domain.models.Article
-import ru.nurdaulet.news.domain.models.FirebaseArticle
 import ru.nurdaulet.news.domain.repository.NewsRepository
 import ru.nurdaulet.news.util.Resource
 import javax.inject.Inject
@@ -15,8 +14,18 @@ class SavedNewsViewModel @Inject constructor(
     private val newsRepository: NewsRepository
 ) : ViewModel() {
 
+    private var _deleteArticleState: MutableLiveData<Resource<Any?>> = MutableLiveData()
+    val deleteArticleState: LiveData<Resource<Any?>> get() = _deleteArticleState
+
     fun deleteArticle(article: Article) = viewModelScope.launch {
-        newsRepository.deleteArticle(article)
+        _deleteArticleState.value = Resource.Loading()
+        newsRepository.deleteArticle(article,
+            {
+                _deleteArticleState.value = Resource.Success(null)
+            },
+            {
+                _deleteArticleState.value = Resource.Error(it)
+            })
     }
 
     private var _saveArticleState: MutableLiveData<Resource<Any?>> = MutableLiveData()
@@ -33,7 +42,8 @@ class SavedNewsViewModel @Inject constructor(
             })
     }
 
-    private var _getSavedArticlesState: MutableLiveData<Resource<List<Article>?>> = MutableLiveData()
+    private var _getSavedArticlesState: MutableLiveData<Resource<List<Article>?>> =
+        MutableLiveData()
     val getSavedArticlesState: LiveData<Resource<List<Article>?>> get() = _getSavedArticlesState
 
     fun getSavedNews() = viewModelScope.launch {

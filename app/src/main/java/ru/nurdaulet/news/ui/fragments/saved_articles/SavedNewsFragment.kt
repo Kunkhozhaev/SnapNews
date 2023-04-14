@@ -2,6 +2,7 @@ package ru.nurdaulet.news.ui.fragments.saved_articles
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,6 @@ import ru.nurdaulet.news.R
 import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.databinding.FragmentSavedNewsBinding
 import ru.nurdaulet.news.domain.models.Article
-import ru.nurdaulet.news.domain.models.Source
 import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.ui.adapters.NewsAdapter
 import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainer
@@ -38,6 +38,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
     private lateinit var viewModel: SavedNewsViewModel
     private lateinit var newsAdapter: NewsAdapter
     private lateinit var parentNavController: NavController
+    private lateinit var articleGlobalVariable: Article
 
     private var _binding: FragmentSavedNewsBinding? = null
     private val binding: FragmentSavedNewsBinding
@@ -65,8 +66,8 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         parentNavController =
             (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
         setupRecyclerView()
-        onSwipeListener(view)
-        setupGetSavedNewsObserve()
+        onSwipeListener()
+        setupObservers()
 
         newsAdapter.setOnArticleClickListener { article ->
             parentNavController.navigate(
@@ -77,7 +78,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         }
     }
 
-    private fun onSwipeListener(view: View) {
+    private fun onSwipeListener() {
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -91,16 +92,10 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                Log.d("SavedNewsFragment", "I am onSwiped")
                 val position = viewHolder.adapterPosition
-                val article = newsAdapter.currentList[position]
-                viewModel.deleteArticle(article)
-                Snackbar.make(view, "Successfully deleted article", Snackbar.LENGTH_LONG).apply {
-                    setAnchorView(R.id.bottomNavigationView)
-                    setAction("Undo") {
-                        viewModel.saveArticle(article)
-                    }
-                    show()
-                }
+                articleGlobalVariable = newsAdapter.currentList[position]
+                viewModel.deleteArticle(articleGlobalVariable)
             }
         }
 
@@ -109,7 +104,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         }
     }
 
-    private fun setupGetSavedNewsObserve() {
+    private fun setupObservers() {
         viewModel.getSavedArticlesState.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
@@ -120,6 +115,54 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
                         }
                         newsAdapter.submitList(distinctArticles)
                     }
+                }
+                is Resource.Error -> {
+                    setLoading(false)
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is Resource.Loading -> {
+                    setLoading(true)
+                }
+            }
+        }
+        viewModel.deleteArticleState.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    setLoading(false)
+                    viewModel.getSavedNews()
+                    // TODO (Snackbar Spam)
+                    Snackbar.make(
+                        binding.root,
+                        "Successfully deleted article",
+                        Snackbar.LENGTH_LONG
+                    ).apply {
+                        setAnchorView(R.id.bottomNavigationView)
+                        setAction("Undo") {
+                            viewModel.saveArticle(articleGlobalVariable)
+                        }
+                        show()
+                    }
+                }
+                is Resource.Error -> {
+                    setLoading(false)
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is Resource.Loading -> {
+                    setLoading(true)
+                }
+            }
+        }
+        viewModel.saveArticleState.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    setLoading(false)
+                    viewModel.getSavedNews()
                 }
                 is Resource.Error -> {
                     setLoading(false)
