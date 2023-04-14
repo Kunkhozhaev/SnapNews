@@ -19,6 +19,7 @@ import ru.nurdaulet.news.databinding.FragmentSavedNewsBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.ui.adapters.NewsAdapter
 import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainer
+import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainerDirections
 import javax.inject.Inject
 
 class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
@@ -63,12 +64,8 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         setupGetSavedNewsObserve()
 
         newsAdapter.setOnArticleClickListener { article ->
-            val bundle = Bundle().apply {
-                putSerializable("article", article)
-            }
             parentNavController.navigate(
-                R.id.action_fragmentGlobalContainer_to_articleFragment,
-                bundle
+                FragmentGlobalContainerDirections.actionFragmentGlobalContainerToArticleFragment(article)
             )
         }
     }

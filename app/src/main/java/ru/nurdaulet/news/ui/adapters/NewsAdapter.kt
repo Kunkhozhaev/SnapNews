@@ -19,6 +19,7 @@ class NewsAdapter : ListAdapter<Article, NewsViewHolder>(ArticleDiffCallback()) 
             )
         )
     }
+
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         holder.onBind(currentList[position], onArticleClickListener)
     }
@@ -26,5 +27,4 @@ class NewsAdapter : ListAdapter<Article, NewsViewHolder>(ArticleDiffCallback()) 
     fun setOnArticleClickListener(listener: (Article) -> Unit) {
         onArticleClickListener = listener
     }
-
 }

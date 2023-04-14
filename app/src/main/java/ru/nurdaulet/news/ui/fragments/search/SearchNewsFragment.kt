@@ -27,7 +27,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val component by lazy{
+    private val component by lazy {
         (requireActivity().application as NewsApplication).component
     }
     private lateinit var viewModel: SearchNewsViewModel
@@ -59,12 +59,8 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         setupSearchNewsObserve()
 
         newsAdapter.setOnArticleClickListener { article ->
-            val bundle = Bundle().apply {
-                putSerializable("article", article)
-            }
             findNavController().navigate(
-                R.id.action_searchNewsFragment_to_articleFragment,
-                bundle
+                SearchNewsFragmentDirections.actionSearchNewsFragmentToArticleFragment(article)
             )
         }
         binding.iconBack.setOnClickListener {

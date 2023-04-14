@@ -21,6 +21,7 @@ import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.ui.adapters.HorizontalNewsAdapter
 import ru.nurdaulet.news.ui.adapters.NewsAdapter
 import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainer
+import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainerDirections
 import ru.nurdaulet.news.util.Constants.COUNTRY_CODE
 import ru.nurdaulet.news.util.Constants.PAGE_OFFSET
 import ru.nurdaulet.news.util.Constants.QUERY_PAGE_SIZE
@@ -31,7 +32,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val component by lazy{
+    private val component by lazy {
         (requireActivity().application as NewsApplication).component
     }
 
@@ -138,21 +139,17 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
     private fun adapterClickListeners() {
         horizontalNewsAdapter.setOnArticleClickListener { article ->
-            val bundle = Bundle().apply {
-                putSerializable("article", article)
-            }
             parentNavController.navigate(
-                R.id.action_fragmentGlobalContainer_to_articleFragment,
-                bundle
+                FragmentGlobalContainerDirections.actionFragmentGlobalContainerToArticleFragment(
+                    article
+                )
             )
         }
         newsAdapter.setOnArticleClickListener { article ->
-            val bundle = Bundle().apply {
-                putSerializable("article", article)
-            }
             parentNavController.navigate(
-                R.id.action_fragmentGlobalContainer_to_articleFragment,
-                bundle
+                FragmentGlobalContainerDirections.actionFragmentGlobalContainerToArticleFragment(
+                    article
+                )
             )
         }
     }
