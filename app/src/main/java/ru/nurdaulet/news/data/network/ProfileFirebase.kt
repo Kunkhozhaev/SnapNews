@@ -1,7 +1,6 @@
 package ru.nurdaulet.news.data.network
 
 import android.net.Uri
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -29,6 +28,7 @@ class ProfileFirebase @Inject constructor(
                 result?.let { user ->
                     sharedPref.username = user.username
                     sharedPref.email = user.email
+                    sharedPref.imageUri = user.image
                     onSuccess.invoke(user)
                 } ?: onFailure.invoke("User data is empty")
             }
@@ -42,7 +42,8 @@ class ProfileFirebase @Inject constructor(
         onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
-        val user = User(auth.currentUser!!.uid, username, auth.currentUser!!.email!!, sharedPref.imageUri)
+        val user =
+            User(auth.currentUser!!.uid, username, auth.currentUser!!.email!!, sharedPref.imageUri)
         db.collection(Constants.FIREBASE_USERS).document(user.id).set(user)
             .addOnSuccessListener {
                 onSuccess.invoke()
@@ -61,7 +62,12 @@ class ProfileFirebase @Inject constructor(
             .addOnSuccessListener {
                 storageRef.child(auth.currentUser!!.uid).downloadUrl.addOnSuccessListener { uri ->
                     sharedPref.imageUri = uri.toString()
-                    val user = User(auth.currentUser!!.uid, sharedPref.username, auth.currentUser!!.email!!, uri.toString())
+                    val user = User(
+                        auth.currentUser!!.uid,
+                        sharedPref.username,
+                        auth.currentUser!!.email!!,
+                        uri.toString()
+                    )
                     db.collection(Constants.FIREBASE_USERS).document(user.id).set(user)
                         .addOnSuccessListener {
                             onSuccess.invoke()

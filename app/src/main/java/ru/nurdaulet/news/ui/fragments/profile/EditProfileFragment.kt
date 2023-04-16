@@ -1,13 +1,7 @@
 package ru.nurdaulet.news.ui.fragments.profile
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.graphics.ImageDecoder
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +13,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.data.shared_pref.SharedPref
 import ru.nurdaulet.news.databinding.FragmentEditProfileBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.util.Resource
-import java.io.IOException
 import javax.inject.Inject
 
 class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
@@ -76,9 +70,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                 editProfile()
             }
             icUploadPicture.setOnClickListener {
-                //TODO Load picture
                 launchGallery()
-                Toast.makeText(requireActivity(), "Uploaded", Toast.LENGTH_SHORT).show()
             }
         }
         viewModel.getProfileData()
@@ -87,50 +79,15 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     }
 
     private fun launchGallery() {
-//        val intent = Intent(Intent.ACTION_GET_CONTENT)
-//        intent.type = "image/*"
         resultLauncher.launch("image/*")
     }
 
     private fun initActivityResultLauncher() {
         resultLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let {
-                Log.d("ProfileFirebase", it.toString())
                 viewModel.uploadPicture(it)
             }
         }
-
-        /*resultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val data: Intent? = result.data
-                    data?.let {
-                        val filePathUri = it.data
-                        try {
-                            if (Build.VERSION.SDK_INT <= 28) {
-                                // TODO(Deprecated)
-                                val bitmap = MediaStore.Images.Media.getBitmap(
-                                    requireActivity().contentResolver,
-                                    filePathUri
-                                )
-                                binding.profilePicture.setImageBitmap(bitmap)
-                            } else {
-                                val source = ImageDecoder.createSource(
-                                    requireActivity().contentResolver,
-                                    filePathUri!!
-                                )
-                                binding.profilePicture.setImageBitmap(
-                                    ImageDecoder.decodeBitmap(
-                                        source
-                                    )
-                                )
-                            }
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-            }*/
     }
 
     private fun editProfile() {
@@ -154,6 +111,8 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
                             Glide.with(this@EditProfileFragment)
                                 .load(user.image)
+                                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                                .placeholder(R.drawable.no_profile_picture)
                                 .error(R.drawable.no_profile_picture)
                                 .into(binding.profilePicture)
 
@@ -213,6 +172,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                     ).show()
                     viewModel.getProfileData()
                 }
+
                 is Resource.Error -> {
                     setLoading(false)
                     response.message?.let { message ->
@@ -220,6 +180,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                             .show()
                     }
                 }
+
                 is Resource.Loading -> {
                     setLoading(true)
                 }

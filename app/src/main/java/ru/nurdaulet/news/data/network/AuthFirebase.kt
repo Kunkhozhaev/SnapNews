@@ -1,6 +1,5 @@
 package ru.nurdaulet.news.data.network
 
-import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
@@ -12,7 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.nurdaulet.news.data.shared_pref.SharedPref
 import ru.nurdaulet.news.domain.models.User
-import ru.nurdaulet.news.util.Constants
+import ru.nurdaulet.news.util.Constants.FIREBASE_USERS
 import ru.nurdaulet.news.util.Constants.currentSignInClient
 import javax.inject.Inject
 
@@ -49,11 +48,26 @@ class AuthFirebase @Inject constructor(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 auth.signInWithCredential(credentials).addOnSuccessListener {
-                    // TODO(user.image is always "" in Goolge sign in. Check if username with such id exists)
-                    val user =
-                        User(auth.currentUser!!.uid, account.displayName!!, account.email!!, sharedPref.imageUri)
-                    db.collection(Constants.FIREBASE_USERS).document(user.id).set(user)
-                    onSuccess.invoke()
+                    db.collection(FIREBASE_USERS).document(auth.currentUser!!.uid).get()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val doc = task.result
+                                if (doc.exists()) {
+                                    onSuccess.invoke()
+                                } else {
+                                    val user = User(
+                                        auth.currentUser!!.uid,
+                                        account.displayName!!,
+                                        account.email!!,
+                                        ""
+                                    )
+                                    db.collection(FIREBASE_USERS).document(user.id).set(user)
+                                    onSuccess.invoke()
+                                }
+                            } else {
+                                onFailure.invoke(task.exception?.message)
+                            }
+                        }
                 }.addOnFailureListener {
                     onFailure.invoke(it.localizedMessage)
                 }
@@ -66,7 +80,10 @@ class AuthFirebase @Inject constructor(
     }
 
     fun login(
-        email: String, password: String, onSuccess: () -> Unit, onFailure: (msg: String?) -> Unit
+        email: String,
+        password: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
     ) {
         auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {
             onSuccess.invoke()
@@ -81,7 +98,7 @@ class AuthFirebase @Inject constructor(
         onFailure: (msg: String?) -> Unit
     ) {
         val user = User(auth.currentUser!!.uid, username, auth.currentUser!!.email!!, "")
-        db.collection(Constants.FIREBASE_USERS).document(user.id).set(user)
+        db.collection(FIREBASE_USERS).document(user.id).set(user)
             .addOnSuccessListener {
                 onSuccess.invoke()
             }

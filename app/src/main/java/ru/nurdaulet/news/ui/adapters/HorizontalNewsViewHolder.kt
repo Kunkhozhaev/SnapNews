@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.domain.models.Article
 
@@ -17,6 +18,7 @@ class HorizontalNewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
 
         Glide.with(itemView)
             .load(article.urlToImage)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .placeholder(R.drawable.progress_download)
             .error(R.drawable.no_source_picture)
             .into(ivBreakingNews)

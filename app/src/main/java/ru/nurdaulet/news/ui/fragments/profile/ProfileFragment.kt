@@ -2,7 +2,6 @@ package ru.nurdaulet.news.ui.fragments.profile
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.data.shared_pref.SharedPref
@@ -90,16 +90,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
                         }
                         Glide.with(this@ProfileFragment)
                             .load(sharedPref.imageUri)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                            .placeholder(R.drawable.no_profile_picture)
                             .error(R.drawable.no_profile_picture)
                             .into(binding.profilePicture)
                     }
                 }
+
                 is Resource.Error -> {
                     response.message?.let { message ->
                         Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
+
                 is Resource.Loading -> {
                 }
             }
@@ -113,6 +117,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
                     setLoading(false)
                     parentNavController.navigate(FragmentGlobalContainerDirections.actionFragmentGlobalContainerToWelcomeScreen())
                 }
+
                 is Resource.Error -> {
                     setLoading(false)
                     response.message?.let { message ->
@@ -120,6 +125,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
                             .show()
                     }
                 }
+
                 is Resource.Loading -> {
                     setLoading(true)
                 }
