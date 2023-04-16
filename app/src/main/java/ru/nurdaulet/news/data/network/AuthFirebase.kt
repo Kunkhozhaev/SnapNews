@@ -45,13 +45,13 @@ class AuthFirebase @Inject constructor(
         onFailure: (msg: String?) -> Unit
     ) {
         currentSignInClient.add(signInClient)
-        Log.d("Blablabla", "This is $signInClient \n ${currentSignInClient[0]}")
         val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 auth.signInWithCredential(credentials).addOnSuccessListener {
+                    // TODO(user.image is always "" in Goolge sign in. Check if username with such id exists)
                     val user =
-                        User(auth.currentUser!!.uid, account.displayName!!, account.email!!, "")
+                        User(auth.currentUser!!.uid, account.displayName!!, account.email!!, sharedPref.imageUri)
                     db.collection(Constants.FIREBASE_USERS).document(user.id).set(user)
                     onSuccess.invoke()
                 }.addOnFailureListener {
@@ -94,7 +94,6 @@ class AuthFirebase @Inject constructor(
         onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
-        Log.d("Blablabla", "This is $currentSignInClient")
         //TODO (signOut value store. Maybe in shared pref?)
         if (sharedPref.isSigned) {
             //TODO (FirebaseAuth signOut listneres)
@@ -102,6 +101,7 @@ class AuthFirebase @Inject constructor(
             sharedPref.username = ""
             sharedPref.email = ""
             sharedPref.isSigned = false
+            sharedPref.imageUri = ""
         } else if (sharedPref.isGoogleSigned) {
             currentSignInClient[0].signOut().addOnSuccessListener {
                 onSuccess.invoke()
@@ -111,6 +111,7 @@ class AuthFirebase @Inject constructor(
                 currentSignInClient.clear()
                 sharedPref.username = ""
                 sharedPref.email = ""
+                sharedPref.imageUri = ""
                 sharedPref.isGoogleSigned = false
             }
         }

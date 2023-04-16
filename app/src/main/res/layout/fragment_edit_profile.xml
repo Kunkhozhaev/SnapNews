@@ -65,6 +65,7 @@
         android:layout_height="108dp"
         android:padding="2dp"
         android:src="@drawable/no_profile_picture"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/tvUserName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

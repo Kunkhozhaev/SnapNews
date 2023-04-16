@@ -2,6 +2,7 @@ package ru.nurdaulet.news.ui.fragments.profile
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.data.shared_pref.SharedPref
@@ -86,6 +88,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
                             tvUserName.text = user.username
                             tvUserMail.text = user.email
                         }
+                        Glide.with(this@ProfileFragment)
+                            .load(sharedPref.imageUri)
+                            .error(R.drawable.no_profile_picture)
+                            .into(binding.profilePicture)
                     }
                 }
                 is Resource.Error -> {

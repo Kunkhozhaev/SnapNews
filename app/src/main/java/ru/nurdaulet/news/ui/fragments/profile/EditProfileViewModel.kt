@@ -1,5 +1,6 @@
 package ru.nurdaulet.news.ui.fragments.profile
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -40,6 +41,21 @@ class EditProfileViewModel @Inject constructor(
             },
             {
                 _editProfileStatus.value = Resource.Error(it)
+            }
+        )
+    }
+
+    private var _uploadImageStatus: MutableLiveData<Resource<Any?>> = MutableLiveData()
+    val uploadImageStatus: LiveData<Resource<Any?>> get() = _uploadImageStatus
+
+    fun uploadPicture(imageUri: Uri) = viewModelScope.launch {
+        _uploadImageStatus.value = Resource.Loading()
+        newsRepository.uploadProfilePicture(imageUri,
+            {
+                _uploadImageStatus.value = Resource.Success(null)
+            },
+            {
+                _uploadImageStatus.value = Resource.Error(it)
             }
         )
     }
