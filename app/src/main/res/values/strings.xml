@@ -45,6 +45,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="username_is_empty">Username should not be empty</string>
     <string name="email_is_empty">E-mail should not be empty</string>
+    <string name="field_is_empty">Field should not be empty</string>
     <string name="password_is_empty">Password should not be empty</string>
 <!--    Don't touch this id-->
     <string name="google_auth_id">201600956776-4ppp6ol5kkamv84bpisot5nq0colc0pb.apps.googleusercontent.com</string>

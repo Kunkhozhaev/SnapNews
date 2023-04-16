@@ -32,4 +32,19 @@ class ProfileFirebase @Inject constructor(
                 onFailure.invoke(it.localizedMessage)
             }
     }
+
+    fun editProfileUsername(
+        username: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    ) {
+        val user = User(auth.currentUser!!.uid, username, auth.currentUser!!.email!!, "")
+        db.collection(Constants.FIREBASE_USERS).document(user.id).set(user)
+            .addOnSuccessListener {
+                onSuccess.invoke()
+            }
+            .addOnFailureListener {
+                onFailure.invoke(it.localizedMessage)
+            }
+    }
 }

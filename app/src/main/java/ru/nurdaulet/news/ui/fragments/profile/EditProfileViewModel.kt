@@ -28,4 +28,19 @@ class EditProfileViewModel @Inject constructor(
             }
         )
     }
+
+    private var _editProfileStatus: MutableLiveData<Resource<Any?>> = MutableLiveData()
+    val editProfileStatus: LiveData<Resource<Any?>> get() = _editProfileStatus
+
+    fun editProfileData(username: String) = viewModelScope.launch {
+        _editProfileStatus.value = Resource.Loading()
+        newsRepository.editProfileUsername(username,
+            {
+                _editProfileStatus.value = Resource.Success(null)
+            },
+            {
+                _editProfileStatus.value = Resource.Error(it)
+            }
+        )
+    }
 }

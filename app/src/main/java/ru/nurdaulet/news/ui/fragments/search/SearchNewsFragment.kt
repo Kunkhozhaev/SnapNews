@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -84,7 +85,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         viewModel.searchNews.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    hideProgressBar()
+                    setLoading(false)
                     response.data?.let { newsResponse ->
                         newsAdapter.submitList(newsResponse.articles.toList())
                         val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + PAGE_OFFSET
@@ -95,14 +96,13 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                     }
                 }
                 is Resource.Error -> {
-                    hideProgressBar()
+                    setLoading(false)
                     response.message?.let { message ->
                         Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
-                is Resource.Loading -> {
-                    showProgressBar()
+                is Resource.Loading -> {setLoading(true)
                 }
             }
         }
@@ -152,14 +152,10 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         }
     }
 
-    private fun hideProgressBar() {
-        binding.paginationProgressBar.visibility = View.INVISIBLE
-        isLoading = false
-    }
-
-    private fun showProgressBar() {
-        binding.paginationProgressBar.visibility = View.VISIBLE
-        isLoading = true
+    private fun setLoading(isLoading: Boolean) {
+        binding.apply {
+            paginationProgressBar.isVisible = isLoading
+        }
     }
 
     override fun onDestroyView() {

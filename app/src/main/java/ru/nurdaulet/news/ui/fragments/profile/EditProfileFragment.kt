@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -59,15 +60,14 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             etEmail.setText(sharedPref.email)
         }
         viewModel.getProfileData()
-        setupProfileDataObserver()
+        setupObservers()
 
         binding.apply {
             iconBack.setOnClickListener {
                 findNavController().popBackStack()
             }
             ivConfirmEditBtn.setOnClickListener {
-                //TODO Edit  Profile
-                Toast.makeText(requireActivity(), "Profile saved", Toast.LENGTH_SHORT).show()
+                editProfile()
             }
             icUploadPicture.setOnClickListener {
                 //TODO Load picture
@@ -76,7 +76,17 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         }
     }
 
-    private fun setupProfileDataObserver() {
+    private fun editProfile() {
+        val username = binding.etFullName.text.toString()
+        if (username.isNotEmpty()) {
+            binding.tilFullName.error = null
+            viewModel.editProfileData(username)
+        } else {
+            binding.tilFullName.error = getString(R.string.field_is_empty)
+        }
+    }
+
+    private fun setupObservers() {
         viewModel.profileStatus.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
@@ -99,6 +109,38 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                 is Resource.Loading -> {
                 }
             }
+        }
+        viewModel.editProfileStatus.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    setLoading(false)
+                    binding.apply {
+                        Toast.makeText(
+                            requireActivity(),
+                            "Username updates successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        sharedPref.username = binding.etFullName.text.toString()
+                        tvUserName.text = binding.etFullName.text.toString()
+                    }
+                }
+                is Resource.Error -> {
+                    setLoading(false)
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is Resource.Loading -> {
+                    setLoading(true)
+                }
+            }
+        }
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        binding.apply {
+            progressBar.isVisible = isLoading
         }
     }
 

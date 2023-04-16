@@ -76,4 +76,10 @@ interface NewsRepository {
         onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     )
+
+    suspend fun editProfileUsername(
+        username: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    )
 }

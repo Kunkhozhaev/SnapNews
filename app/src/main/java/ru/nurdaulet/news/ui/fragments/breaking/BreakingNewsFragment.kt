@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -90,20 +91,20 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         viewModel.breakingNews.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    hideProgressBar()
+                    setLoading(false)
                     response.data?.let { topNewsResponse ->
                         horizontalNewsAdapter.submitList(topNewsResponse.articles.toList())
                     }
                 }
                 is Resource.Error -> {
-                    hideProgressBar()
+                    setLoading(false)
                     response.message?.let { message ->
                         Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
                 is Resource.Loading -> {
-                    showProgressBar()
+                    setLoading(true)
                 }
             }
         }
@@ -113,7 +114,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         viewModel.categoryNews.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    hideProgressBar()
+                    setLoading(false)
                     response.data?.let { newsResponse ->
                         newsAdapter.submitList(newsResponse.articles.toList())
                         val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + PAGE_OFFSET
@@ -124,14 +125,14 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                     }
                 }
                 is Resource.Error -> {
-                    hideProgressBar()
+                    setLoading(false)
                     response.message?.let { message ->
                         Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
                 is Resource.Loading -> {
-                    showProgressBar()
+                    setLoading(true)
                 }
             }
         }
@@ -212,14 +213,10 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         }
     }
 
-    private fun hideProgressBar() {
-        binding.paginationProgressBar.visibility = View.INVISIBLE
-        isLoading = false
-    }
-
-    private fun showProgressBar() {
-        binding.paginationProgressBar.visibility = View.VISIBLE
-        isLoading = true
+    private fun setLoading(isLoading: Boolean) {
+        binding.apply {
+            paginationProgressBar.isVisible = isLoading
+        }
     }
 
     override fun onDestroyView() {
