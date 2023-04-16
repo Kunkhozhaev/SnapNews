@@ -1,5 +1,6 @@
 package ru.nurdaulet.news.domain.repository
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -73,6 +74,18 @@ interface NewsRepository {
     )
 
     suspend fun signOut(
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    )
+
+    suspend fun editProfileUsername(
+        username: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    )
+
+    suspend fun uploadProfilePicture(
+        imageUri: Uri,
         onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     )

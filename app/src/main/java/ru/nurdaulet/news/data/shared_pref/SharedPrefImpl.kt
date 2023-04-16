@@ -41,6 +41,12 @@ class SharedPrefImpl @Inject constructor(context: Context) : SharedPref {
             saveString(EMAIL_KEY, value)
         }
 
+    override var imageUri: String
+        get() = getString(IMAGE_KEY)
+        set(value) {
+            saveString(IMAGE_KEY, value)
+        }
+
     private fun saveString(key: String, value: String) {
         editor.putString(key, value).apply()
     }
@@ -63,5 +69,6 @@ class SharedPrefImpl @Inject constructor(context: Context) : SharedPref {
         private const val USER_NAME_KEY = "username"
         private const val EMAIL_KEY = "email"
         private const val COUNTRY_KEY = "country"
+        private const val IMAGE_KEY = "image"
     }
 }

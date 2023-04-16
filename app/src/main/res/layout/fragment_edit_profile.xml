@@ -65,6 +65,7 @@
         android:layout_height="108dp"
         android:padding="2dp"
         android:src="@drawable/no_profile_picture"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/tvUserName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -136,7 +137,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_full_name"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -153,7 +154,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_email"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

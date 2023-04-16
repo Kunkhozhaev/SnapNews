@@ -137,7 +137,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
                     Snackbar.make(
                         binding.root,
                         "Successfully deleted article",
-                        Snackbar.LENGTH_LONG
+                        Snackbar.LENGTH_SHORT
                     ).apply {
                         setAnchorView(R.id.bottomNavigationView)
                         setAction("Undo") {
