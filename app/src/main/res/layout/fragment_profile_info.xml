@@ -14,15 +14,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/edit_profile_fon" />
+        app:srcCompat="@drawable/edit_profile_background" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profilePicture"
         android:layout_width="108dp"
         android:layout_height="108dp"
         android:layout_marginTop="-36dp"
+        android:scaleType="centerCrop"
         android:padding="2dp"
-        app:strokeWidth="2dp"
+        app:strokeWidth="1dp"
         android:src="@drawable/no_profile_picture"
         app:layout_constraintBottom_toTopOf="@+id/tvUserName"
         app:layout_constraintEnd_toEndOf="parent"
