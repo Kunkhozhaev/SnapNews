@@ -4,10 +4,7 @@ import android.app.Application
 import android.content.Context
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import ru.nurdaulet.news.data.NewsRepositoryImpl
-import ru.nurdaulet.news.data.database.ArticleDao
-import ru.nurdaulet.news.data.database.ArticleDatabase
 import ru.nurdaulet.news.data.shared_pref.SharedPref
 import ru.nurdaulet.news.data.shared_pref.SharedPrefImpl
 import ru.nurdaulet.news.domain.repository.NewsRepository
@@ -23,15 +20,4 @@ interface DataModule {
 
     @Binds
     fun bindContext(application: Application): Context
-
-    companion object {
-
-        @ApplicationScope
-        @Provides
-        fun providesArticleDao(
-            application: Application
-        ): ArticleDao {
-            return ArticleDatabase.getInstance(application).getArticleDao()
-        }
-    }
 }

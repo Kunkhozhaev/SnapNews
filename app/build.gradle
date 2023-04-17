@@ -63,13 +63,6 @@ dependencies {
     // Architectural Components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
 
-    // Room
-    implementation "androidx.room:room-runtime:2.5.1"
-    kapt "androidx.room:room-compiler:2.5.1"
-
-    // Kotlin Extensions and Coroutines support for Room
-    implementation "androidx.room:room-ktx:2.5.1"
-
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
@@ -93,6 +86,7 @@ dependencies {
 
     // Cardview
     implementation 'androidx.cardview:cardview:1.0.0'
+
     // Slide-to-act view
     implementation "com.ncorti:slidetoact:0.10.0"
 }

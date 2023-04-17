@@ -1,7 +1,6 @@
 package ru.nurdaulet.news.domain.repository
 
 import android.net.Uri
-import androidx.lifecycle.LiveData
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import retrofit2.Response
@@ -19,10 +18,6 @@ interface NewsRepository {
     ): Response<NewsResponse>
 
     suspend fun searchNews(searchQuery: String, pageNumber: Int): Response<NewsResponse>
-
-    suspend fun upsert(article: Article): Long
-
-    fun getSavedNews(): LiveData<List<Article>>
 
     suspend fun saveArticle(
         article: Article,

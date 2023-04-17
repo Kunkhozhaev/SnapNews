@@ -1,12 +1,8 @@
 package ru.nurdaulet.news.data
 
 import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import ru.nurdaulet.news.data.database.ArticleDao
-import ru.nurdaulet.news.data.database.ArticleModelMapper
 import ru.nurdaulet.news.data.network.ArticleFirebase
 import ru.nurdaulet.news.data.network.AuthFirebase
 import ru.nurdaulet.news.data.network.ProfileFirebase
@@ -17,8 +13,6 @@ import ru.nurdaulet.news.domain.repository.NewsRepository
 import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(
-    private val articleDao: ArticleDao,
-    private val mapper: ArticleModelMapper,
     private val auth: AuthFirebase,
     private val profile: ProfileFirebase,
     private val articles: ArticleFirebase
@@ -48,13 +42,6 @@ class NewsRepositoryImpl @Inject constructor(
 
     override suspend fun searchNews(searchQuery: String, pageNumber: Int) =
         RetrofitInstance.api.searchForNews(searchQuery, pageNumber)
-
-    override suspend fun upsert(article: Article) =
-        articleDao.upsert(mapper.mapEntityToDbModel(article))
-
-    override fun getSavedNews(): LiveData<List<Article>> = articleDao.getAllArticles().map {
-        mapper.mapListDbModelToListEntity(it)
-    }
 
     override suspend fun deleteArticle(
         article: Article,
