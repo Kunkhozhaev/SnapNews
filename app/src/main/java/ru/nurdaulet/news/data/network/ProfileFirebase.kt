@@ -29,6 +29,7 @@ class ProfileFirebase @Inject constructor(
                     sharedPref.username = user.username
                     sharedPref.email = user.email
                     sharedPref.imageUri = user.image
+                    sharedPref.country = user.country
                     onSuccess.invoke(user)
                 } ?: onFailure.invoke("User data is empty")
             }
@@ -43,7 +44,7 @@ class ProfileFirebase @Inject constructor(
         onFailure: (msg: String?) -> Unit
     ) {
         val user =
-            User(auth.currentUser!!.uid, username, auth.currentUser!!.email!!, sharedPref.imageUri)
+            User(auth.currentUser!!.uid, username, auth.currentUser!!.email!!, sharedPref.imageUri, sharedPref.country)
         db.collection(Constants.FIREBASE_USERS).document(user.id).set(user)
             .addOnSuccessListener {
                 onSuccess.invoke()
@@ -66,7 +67,8 @@ class ProfileFirebase @Inject constructor(
                         auth.currentUser!!.uid,
                         sharedPref.username,
                         auth.currentUser!!.email!!,
-                        uri.toString()
+                        uri.toString(),
+                        sharedPref.country
                     )
                     db.collection(Constants.FIREBASE_USERS).document(user.id).set(user)
                         .addOnSuccessListener {

@@ -59,7 +59,8 @@ class AuthFirebase @Inject constructor(
                                         auth.currentUser!!.uid,
                                         account.displayName!!,
                                         account.email!!,
-                                        ""
+                                        "",
+                                        sharedPref.country
                                     )
                                     db.collection(FIREBASE_USERS).document(user.id).set(user)
                                     onSuccess.invoke()
@@ -97,7 +98,7 @@ class AuthFirebase @Inject constructor(
         onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
-        val user = User(auth.currentUser!!.uid, username, auth.currentUser!!.email!!, "")
+        val user = User(auth.currentUser!!.uid, username, auth.currentUser!!.email!!, "", sharedPref.country)
         db.collection(FIREBASE_USERS).document(user.id).set(user)
             .addOnSuccessListener {
                 onSuccess.invoke()
@@ -115,10 +116,14 @@ class AuthFirebase @Inject constructor(
         if (sharedPref.isSigned) {
             //TODO (FirebaseAuth signOut listneres)
             auth.signOut()
-            sharedPref.username = ""
-            sharedPref.email = ""
-            sharedPref.isSigned = false
-            sharedPref.imageUri = ""
+            sharedPref.apply {
+                username = ""
+                email = ""
+                isSigned = false
+                imageUri = ""
+                country = ""
+            }
+
         } else if (sharedPref.isGoogleSigned) {
             currentSignInClient[0].signOut().addOnSuccessListener {
                 onSuccess.invoke()
@@ -126,10 +131,13 @@ class AuthFirebase @Inject constructor(
                 onFailure.invoke(exception.localizedMessage)
             }.addOnCompleteListener {
                 currentSignInClient.clear()
-                sharedPref.username = ""
-                sharedPref.email = ""
-                sharedPref.imageUri = ""
-                sharedPref.isGoogleSigned = false
+                sharedPref.apply {
+                    username = ""
+                    email = ""
+                    imageUri = ""
+                    isGoogleSigned = false
+                    country = ""
+                }
             }
         }
     }

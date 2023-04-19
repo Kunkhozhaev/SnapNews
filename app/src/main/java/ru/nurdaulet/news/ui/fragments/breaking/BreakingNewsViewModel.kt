@@ -3,16 +3,17 @@ package ru.nurdaulet.news.ui.fragments.breaking
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.NetworkCapabilities.*
+import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
+import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
+import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.domain.models.NewsResponse
 import ru.nurdaulet.news.domain.repository.NewsRepository
-import ru.nurdaulet.news.app.NewsApplication
-import ru.nurdaulet.news.util.Constants.COUNTRY_CODE
 import ru.nurdaulet.news.util.Constants.listOfCategories
 import ru.nurdaulet.news.util.Resource
 import java.io.IOException
@@ -30,11 +31,6 @@ class BreakingNewsViewModel @Inject constructor(
     val categoryNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var categoryNewsPage = 1
     var categoryNewsResponse: NewsResponse? = null
-
-    init {
-        getBreakingNews(COUNTRY_CODE)
-        getCategoryNews(COUNTRY_CODE, 0, false)
-    }
 
     fun getBreakingNews(countryCode: String) = viewModelScope.launch {
         safeBreakingNewsCall(countryCode)

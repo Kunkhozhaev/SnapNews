@@ -22,6 +22,7 @@ import ru.nurdaulet.news.app.NewsApplication
 import ru.nurdaulet.news.data.shared_pref.SharedPref
 import ru.nurdaulet.news.databinding.FragmentLoginBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
+import ru.nurdaulet.news.util.Constants.COUNTRY_CODE
 import ru.nurdaulet.news.util.Resource
 import javax.inject.Inject
 
@@ -96,6 +97,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     val data: Intent? = result.data
                     val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
                     account?.let {
+                        sharedPref.country = COUNTRY_CODE
                         viewModel.googleSignIn(it, signInClient)
                     }
                 }

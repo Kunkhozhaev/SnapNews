@@ -2,6 +2,7 @@ package ru.nurdaulet.news.ui.fragments.breaking
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,19 +18,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import ru.nurdaulet.news.R
 import ru.nurdaulet.news.app.NewsApplication
+import ru.nurdaulet.news.data.shared_pref.SharedPref
 import ru.nurdaulet.news.databinding.FragmentBreakingNewsBinding
 import ru.nurdaulet.news.ui.ViewModelFactory
 import ru.nurdaulet.news.ui.adapters.HorizontalNewsAdapter
 import ru.nurdaulet.news.ui.adapters.NewsAdapter
 import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainer
 import ru.nurdaulet.news.ui.fragments.FragmentGlobalContainerDirections
-import ru.nurdaulet.news.util.Constants.COUNTRY_CODE
 import ru.nurdaulet.news.util.Constants.PAGE_OFFSET
 import ru.nurdaulet.news.util.Constants.QUERY_PAGE_SIZE
 import ru.nurdaulet.news.util.Resource
 import javax.inject.Inject
 
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
+
+    @Inject
+    lateinit var sharedPref: SharedPref
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -67,6 +71,9 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         viewModel = ViewModelProvider(this, viewModelFactory)[BreakingNewsViewModel::class.java]
         parentNavController =
             (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
+        Log.d("BreakingNewsFragment", sharedPref.country)
+        viewModel.getBreakingNews(sharedPref.country)
+        viewModel.getCategoryNews(sharedPref.country, 0, false)
         setupRecyclerView()
         setupBreakingNewsObserver()
         setupCategoryNewsObserver()
@@ -79,7 +86,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
             TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tabPosition = tab?.position ?: 0
-                viewModel.getCategoryNews(COUNTRY_CODE, tabPosition, false)
+                viewModel.getCategoryNews(sharedPref.country, tabPosition, false)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -96,6 +103,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                         horizontalNewsAdapter.submitList(topNewsResponse.articles.toList())
                     }
                 }
+
                 is Resource.Error -> {
                     setLoading(false)
                     response.message?.let { message ->
@@ -103,6 +111,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                             .show()
                     }
                 }
+
                 is Resource.Loading -> {
                     setLoading(true)
                 }
@@ -124,6 +133,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                         }
                     }
                 }
+
                 is Resource.Error -> {
                     setLoading(false)
                     response.message?.let { message ->
@@ -131,6 +141,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                             .show()
                     }
                 }
+
                 is Resource.Loading -> {
                     setLoading(true)
                 }
@@ -159,16 +170,6 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     private var isLastPage = false
     private var isScrolling = false
 
-    /*private val categoryArticlesScrollListener = object : CustomScrollListener(isLoading,isLastPage) {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            if (shouldPaginate) {
-                viewModel.getCategoryNews(COUNTRY_CODE, tabPosition, true)
-                isScrolling = false
-            }
-        }
-    }*/
-
     private val categoryArticlesScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
@@ -192,7 +193,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem &&
                     isNotAtBeginning && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
-                viewModel.getCategoryNews(COUNTRY_CODE, tabPosition, true)
+                viewModel.getCategoryNews(sharedPref.country, tabPosition, true)
                 isScrolling = false
             }
         }

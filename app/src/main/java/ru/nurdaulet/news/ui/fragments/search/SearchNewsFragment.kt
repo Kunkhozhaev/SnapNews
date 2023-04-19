@@ -113,7 +113,6 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
     private var isScrolling = false
 
     private val searchArticlesScrollListener = object : RecyclerView.OnScrollListener() {
-        //TODO Interface class of scroll listener
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
