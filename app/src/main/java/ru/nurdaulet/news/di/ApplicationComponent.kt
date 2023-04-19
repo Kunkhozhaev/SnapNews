@@ -11,6 +11,7 @@ import ru.nurdaulet.news.ui.fragments.profile.EditProfileFragment
 import ru.nurdaulet.news.ui.fragments.profile.ProfileFragment
 import ru.nurdaulet.news.ui.fragments.saved_articles.SavedNewsFragment
 import ru.nurdaulet.news.ui.fragments.search.SearchNewsFragment
+import ru.nurdaulet.news.ui.fragments.settings.SettingsFragment
 import ru.nurdaulet.news.ui.splash_screen.SplashScreen
 
 @ApplicationScope
@@ -26,6 +27,7 @@ interface ApplicationComponent {
     fun inject(fragment: EditProfileFragment)
 
     fun inject(fragment: SplashScreen)
+    fun inject(fragment: SettingsFragment)
 
     @Component.Factory
     interface ApplicationComponentFactory {

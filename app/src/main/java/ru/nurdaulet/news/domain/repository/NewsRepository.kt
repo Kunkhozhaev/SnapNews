@@ -79,6 +79,12 @@ interface NewsRepository {
         onFailure: (msg: String?) -> Unit
     )
 
+    suspend fun editCountry(
+        countryCode: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    )
+
     suspend fun uploadProfilePicture(
         imageUri: Uri,
         onSuccess: () -> Unit,

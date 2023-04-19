@@ -32,14 +32,6 @@ class NewsRepositoryImpl @Inject constructor(
     override suspend fun getCategoryNews(countryCode: String, category: String, pageNumber: Int) =
         RetrofitInstance.api.getCategoryNews(countryCode, category, pageNumber)
 
-    override suspend fun editProfileUsername(
-        username: String,
-        onSuccess: () -> Unit,
-        onFailure: (msg: String?) -> Unit
-    ) {
-        profile.editProfileUsername(username, onSuccess, onFailure)
-    }
-
     override suspend fun searchNews(searchQuery: String, pageNumber: Int) =
         RetrofitInstance.api.searchForNews(searchQuery, pageNumber)
 
@@ -99,6 +91,22 @@ class NewsRepositoryImpl @Inject constructor(
         onFailure: (msg: String?) -> Unit
     ) {
         auth.addUserToDb(username, onSuccess, onFailure)
+    }
+
+    override suspend fun editProfileUsername(
+        username: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    ) {
+        profile.editProfileUsername(username, onSuccess, onFailure)
+    }
+
+    override suspend fun editCountry(
+        countryCode: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    ) {
+        profile.editCountryCode(countryCode, onSuccess, onFailure)
     }
 
     override suspend fun getProfileData(

@@ -132,7 +132,7 @@
         android:layout_marginTop="8dp"
         android:hint="@string/country_text"
         app:startIconCheckable="true"
-        app:startIconDrawable="@drawable/ic_google"
+        app:startIconDrawable="@drawable/ic_country"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

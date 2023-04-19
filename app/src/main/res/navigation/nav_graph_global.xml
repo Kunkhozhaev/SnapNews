@@ -35,6 +35,9 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/news_nav_graph"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_fragmentGlobalContainer_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -118,6 +121,10 @@
             app:popUpTo="@id/splashScreen"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="ru.nurdaulet.news.ui.fragments.settings.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>
 
     <!--app:enterAnim="@anim/slide_in_right"

@@ -54,6 +54,22 @@ class ProfileFirebase @Inject constructor(
             }
     }
 
+    fun editCountryCode(
+        countryCode: String,
+        onSuccess: () -> Unit,
+        onFailure: (msg: String?) -> Unit
+    ) {
+        val user =
+            User(auth.currentUser!!.uid, sharedPref.username, auth.currentUser!!.email!!, sharedPref.imageUri, countryCode)
+        db.collection(Constants.FIREBASE_USERS).document(user.id).set(user)
+            .addOnSuccessListener {
+                onSuccess.invoke()
+            }
+            .addOnFailureListener {
+                onFailure.invoke(it.localizedMessage)
+            }
+    }
+
     fun uploadProfilePicture(
         imageUri: Uri,
         onSuccess: () -> Unit,

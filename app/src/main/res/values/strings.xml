@@ -54,4 +54,8 @@
     <string name="welcome_text">Welcome to SnapNews</string>
     <string name="welcome_subtitle">Browse the latest news articles</string>
     <string name="get_started_btn_text">Get Started</string>
+    <string name="country_text">Country</string>
+    <string name="united_states_text">United States</string>
+    <string name="choose_country_text">Choose country to receive its local news</string>
+    <string name="settings_text">Settings</string>
 </resources>

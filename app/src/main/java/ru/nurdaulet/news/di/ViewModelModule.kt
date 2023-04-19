@@ -12,6 +12,7 @@ import ru.nurdaulet.news.ui.fragments.profile.EditProfileViewModel
 import ru.nurdaulet.news.ui.fragments.profile.ProfileViewModel
 import ru.nurdaulet.news.ui.fragments.saved_articles.SavedNewsViewModel
 import ru.nurdaulet.news.ui.fragments.search.SearchNewsViewModel
+import ru.nurdaulet.news.ui.fragments.settings.SettingsViewModel
 
 @Module
 interface ViewModelModule {
@@ -55,4 +56,9 @@ interface ViewModelModule {
     @ViewModelKey(EditProfileViewModel::class)
     @Binds
     fun bindEditProfileViewModel(impl: EditProfileViewModel): ViewModel
+
+    @IntoMap
+    @ViewModelKey(SettingsViewModel::class)
+    @Binds
+    fun bindSettingsViewModel(impl: SettingsViewModel): ViewModel
 }

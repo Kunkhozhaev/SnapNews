@@ -66,17 +66,21 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
         setupProfileDataObserver()
         setupSignOutObserver()
 
-        binding.btnEditProfile.setOnClickListener {
-            parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_editProfileFragment)
+        binding.apply {
+            btnEditProfile.setOnClickListener {
+                parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_editProfileFragment)
+            }
+            btnSettingsProfile.setOnClickListener {
+                parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_settingsFragment)
+            }
+            btnLogOut.setOnClickListener {
+                //TODO signOut Observer with sealed class or use FirebaseAuth.AuthStateListener
+                viewModel.signOut()
+                /*parentNavController.navigate(
+                    FragmentGlobalContainerDirections.actionFragmentGlobalContainerToLoginFragment()
+                )*/
+            }
         }
-        binding.btnLogOut.setOnClickListener {
-            //TODO signOut Observer with sealed class or use FirebaseAuth.AuthStateListener
-            viewModel.signOut()
-            /*parentNavController.navigate(
-                FragmentGlobalContainerDirections.actionFragmentGlobalContainerToLoginFragment()
-            )*/
-        }
-
     }
 
     private fun setupProfileDataObserver() {
