@@ -60,10 +60,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
         parentNavController =
             (parentFragment?.parentFragment as FragmentGlobalContainer).findNavController()
         viewModel = ViewModelProvider(this, viewModelFactory)[ProfileViewModel::class.java]
-        binding.tvUserName.text = sharedPref.username
-        binding.tvUserMail.text = sharedPref.email
-        viewModel.getProfileData()
-        setupProfileDataObserver()
+        initProfileData()
         setupSignOutObserver()
 
         binding.apply {
@@ -74,43 +71,26 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_info) {
                 parentNavController.navigate(R.id.action_fragmentGlobalContainer_to_settingsFragment)
             }
             btnLogOut.setOnClickListener {
-                //TODO signOut Observer with sealed class or use FirebaseAuth.AuthStateListener
                 viewModel.signOut()
-                /*parentNavController.navigate(
-                    FragmentGlobalContainerDirections.actionFragmentGlobalContainerToLoginFragment()
-                )*/
+                //TODO signOut Observer with sealed class or use FirebaseAuth.AuthStateListener
+                parentNavController.navigate(
+                    FragmentGlobalContainerDirections.actionFragmentGlobalContainerToWelcomeScreen()
+                )
             }
         }
     }
 
-    private fun setupProfileDataObserver() {
-        viewModel.profileStatus.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is Resource.Success -> {
-                    binding.apply {
-                        response.data?.let { user ->
-                            tvUserName.text = user.username
-                            tvUserMail.text = user.email
-                        }
-                        Glide.with(this@ProfileFragment)
-                            .load(sharedPref.imageUri)
-                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                            .placeholder(R.drawable.no_profile_picture)
-                            .error(R.drawable.no_profile_picture)
-                            .into(binding.profilePicture)
-                    }
-                }
+    private fun initProfileData() {
+        binding.apply {
+            tvUserName.text = sharedPref.username
+            tvUserMail.text = sharedPref.email
 
-                is Resource.Error -> {
-                    response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-
-                is Resource.Loading -> {
-                }
-            }
+            Glide.with(this@ProfileFragment)
+                .load(sharedPref.imageUri)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .placeholder(R.drawable.no_profile_picture)
+                .error(R.drawable.no_profile_picture)
+                .into(binding.profilePicture)
         }
     }
 

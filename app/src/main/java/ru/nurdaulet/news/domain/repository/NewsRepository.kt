@@ -6,7 +6,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import retrofit2.Response
 import ru.nurdaulet.news.domain.models.Article
 import ru.nurdaulet.news.domain.models.NewsResponse
-import ru.nurdaulet.news.domain.models.User
 
 interface NewsRepository {
     suspend fun getBreakingNews(countryCode: String, pageNumber: Int): Response<NewsResponse>
@@ -64,7 +63,7 @@ interface NewsRepository {
     )
 
     suspend fun getProfileData(
-        onSuccess: (user: User) -> Unit,
+        onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     )
 

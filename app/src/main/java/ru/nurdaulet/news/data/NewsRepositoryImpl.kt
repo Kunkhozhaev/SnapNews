@@ -8,7 +8,6 @@ import ru.nurdaulet.news.data.network.AuthFirebase
 import ru.nurdaulet.news.data.network.ProfileFirebase
 import ru.nurdaulet.news.data.network.RetrofitInstance
 import ru.nurdaulet.news.domain.models.Article
-import ru.nurdaulet.news.domain.models.User
 import ru.nurdaulet.news.domain.repository.NewsRepository
 import javax.inject.Inject
 
@@ -110,7 +109,7 @@ class NewsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getProfileData(
-        onSuccess: (user: User) -> Unit,
+        onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
         profile.getProfileData(onSuccess, onFailure)

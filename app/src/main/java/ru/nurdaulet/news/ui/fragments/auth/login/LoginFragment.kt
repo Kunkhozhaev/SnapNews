@@ -112,8 +112,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         setLoading(false)
                         sharedPref.isSigned = true
                         sharedPref.isGoogleSigned = false
-                        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToFragmentGlobalContainer())
+                        viewModel.getProfileData()
+                        setupProfileDataObserver()
                     }
+
                     is Resource.Error -> {
                         setLoading(false)
                         response.message?.let { message ->
@@ -125,6 +127,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                 .show()
                         }
                     }
+
                     is Resource.Loading -> {
                         setLoading(true)
                     }
@@ -136,8 +139,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         setLoading(false)
                         sharedPref.isGoogleSigned = true
                         sharedPref.isSigned = false
-                        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToFragmentGlobalContainer())
+                        viewModel.getProfileData()
+                        setupProfileDataObserver()
                     }
+
                     is Resource.Error -> {
                         setLoading(false)
                         response.message?.let { message ->
@@ -149,9 +154,37 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                 .show()
                         }
                     }
+
                     is Resource.Loading -> {
                         setLoading(true)
                     }
+                }
+            }
+        }
+    }
+
+    private fun setupProfileDataObserver() {
+        viewModel.profileStatus.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    setLoading(false)
+                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToFragmentGlobalContainer())
+                }
+
+                is Resource.Error -> {
+                    setLoading(false)
+                    response.message?.let { message ->
+                        Toast.makeText(
+                            activity,
+                            "An error occurred: $message",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                }
+
+                is Resource.Loading -> {
+                    setLoading(true)
                 }
             }
         }

@@ -19,7 +19,7 @@ class ProfileFirebase @Inject constructor(
     private val storageRef = FirebaseStorage.getInstance().reference.child("Images")
 
     fun getProfileData(
-        onSuccess: (user: User) -> Unit,
+        onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
         db.collection(Constants.FIREBASE_USERS).document(auth.currentUser!!.uid).get()
@@ -30,7 +30,7 @@ class ProfileFirebase @Inject constructor(
                     sharedPref.email = user.email
                     sharedPref.imageUri = user.image
                     sharedPref.country = user.country
-                    onSuccess.invoke(user)
+                    onSuccess.invoke()
                 } ?: onFailure.invoke("User data is empty")
             }
             .addOnFailureListener {

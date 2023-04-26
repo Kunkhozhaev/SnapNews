@@ -18,8 +18,6 @@ class LoginViewModel @Inject constructor(
     private var _login: MutableLiveData<Resource<Any?>> = MutableLiveData()
     val loginStatus: LiveData<Resource<Any?>> get() = _login
 
-    private var _googleSignIn: MutableLiveData<Resource<Any?>> = MutableLiveData()
-    val googleSignInStatus: LiveData<Resource<Any?>> get() = _googleSignIn
 
     fun login(mail: String, password: String) = viewModelScope.launch {
         _login.value = Resource.Loading()
@@ -32,15 +30,33 @@ class LoginViewModel @Inject constructor(
             })
     }
 
-    fun googleSignIn(account: GoogleSignInAccount, signInClient: GoogleSignInClient) = viewModelScope.launch {
-        _googleSignIn.value = Resource.Loading()
-        newsRepository.googleSignIn(account,
-            signInClient,
+    private var _googleSignIn: MutableLiveData<Resource<Any?>> = MutableLiveData()
+    val googleSignInStatus: LiveData<Resource<Any?>> get() = _googleSignIn
+    fun googleSignIn(account: GoogleSignInAccount, signInClient: GoogleSignInClient) =
+        viewModelScope.launch {
+            _googleSignIn.value = Resource.Loading()
+            newsRepository.googleSignIn(account,
+                signInClient,
+                {
+                    _googleSignIn.value = Resource.Success(null)
+                },
+                {
+                    _googleSignIn.value = Resource.Error(it)
+                })
+        }
+
+    private var _profileStatus: MutableLiveData<Resource<Any?>> = MutableLiveData()
+    val profileStatus: LiveData<Resource<Any?>> get() = _profileStatus
+
+    fun getProfileData() = viewModelScope.launch {
+        _profileStatus.value = Resource.Loading()
+        newsRepository.getProfileData(
             {
-                _googleSignIn.value = Resource.Success(null)
+                _profileStatus.value = Resource.Success(null)
             },
             {
-                _googleSignIn.value = Resource.Error(it)
-            })
+                _profileStatus.value = Resource.Error(it)
+            }
+        )
     }
 }

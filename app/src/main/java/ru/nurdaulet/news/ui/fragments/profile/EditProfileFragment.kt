@@ -58,11 +58,29 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[EditProfileViewModel::class.java]
+        initUserData()
+        setClickListeners()
+        setupObservers()
+        initActivityResultLauncher()
+    }
+
+    private fun initUserData() {
         binding.apply {
             tvUserName.text = sharedPref.username
             tvUserMail.text = sharedPref.email
             etFullName.setText(sharedPref.username)
             etEmail.setText(sharedPref.email)
+            Glide.with(this@EditProfileFragment)
+                .load(sharedPref.imageUri)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .placeholder(R.drawable.no_profile_picture)
+                .error(R.drawable.no_profile_picture)
+                .into(binding.profilePicture)
+        }
+    }
+
+    private fun setClickListeners() {
+        binding.apply {
             iconBack.setOnClickListener {
                 findNavController().popBackStack()
             }
@@ -73,9 +91,6 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                 launchGallery()
             }
         }
-        viewModel.getProfileData()
-        setupObservers()
-        initActivityResultLauncher()
     }
 
     private fun launchGallery() {
@@ -101,38 +116,6 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     }
 
     private fun setupObservers() {
-        viewModel.profileStatus.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is Resource.Success -> {
-                    binding.apply {
-                        response.data?.let { user ->
-                            tvUserName.text = user.username
-                            tvUserMail.text = user.email
-
-                            Glide.with(this@EditProfileFragment)
-                                .load(user.image)
-                                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                                .placeholder(R.drawable.no_profile_picture)
-                                .error(R.drawable.no_profile_picture)
-                                .into(binding.profilePicture)
-
-                            etFullName.setText(user.username)
-                            etEmail.setText(user.email)
-                        }
-                    }
-                }
-
-                is Resource.Error -> {
-                    response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-
-                is Resource.Loading -> {
-                }
-            }
-        }
         viewModel.editProfileStatus.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
@@ -170,7 +153,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
                         "Image loaded successfully",
                         Toast.LENGTH_SHORT
                     ).show()
-                    viewModel.getProfileData()
+                    initUserData()
                 }
 
                 is Resource.Error -> {
