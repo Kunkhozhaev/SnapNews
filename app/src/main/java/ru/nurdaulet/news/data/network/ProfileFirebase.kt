@@ -10,13 +10,11 @@ import ru.nurdaulet.news.util.Constants
 import javax.inject.Inject
 
 class ProfileFirebase @Inject constructor(
-    private val sharedPref: SharedPref
-    //private val auth: FirebaseAuth,
-    // private val db: FirebaseFirestore
+    private val sharedPref: SharedPref,
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore,
+    private val storageRef: FirebaseStorage
 ) {
-    private val auth = FirebaseAuth.getInstance()
-    private val db = FirebaseFirestore.getInstance()
-    private val storageRef = FirebaseStorage.getInstance().reference.child("Images")
 
     fun getProfileData(
         onSuccess: () -> Unit,
@@ -44,7 +42,13 @@ class ProfileFirebase @Inject constructor(
         onFailure: (msg: String?) -> Unit
     ) {
         val user =
-            User(auth.currentUser!!.uid, username, auth.currentUser!!.email!!, sharedPref.imageUri, sharedPref.country)
+            User(
+                auth.currentUser!!.uid,
+                username,
+                auth.currentUser!!.email!!,
+                sharedPref.imageUri,
+                sharedPref.country
+            )
         db.collection(Constants.FIREBASE_USERS).document(user.id).set(user)
             .addOnSuccessListener {
                 onSuccess.invoke()
@@ -60,7 +64,13 @@ class ProfileFirebase @Inject constructor(
         onFailure: (msg: String?) -> Unit
     ) {
         val user =
-            User(auth.currentUser!!.uid, sharedPref.username, auth.currentUser!!.email!!, sharedPref.imageUri, countryCode)
+            User(
+                auth.currentUser!!.uid,
+                sharedPref.username,
+                auth.currentUser!!.email!!,
+                sharedPref.imageUri,
+                countryCode
+            )
         db.collection(Constants.FIREBASE_USERS).document(user.id).set(user)
             .addOnSuccessListener {
                 onSuccess.invoke()
@@ -75,9 +85,10 @@ class ProfileFirebase @Inject constructor(
         onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
-        storageRef.child(auth.currentUser!!.uid).putFile(imageUri)
+        storageRef.reference.child("Images").child(auth.currentUser!!.uid).putFile(imageUri)
             .addOnSuccessListener {
-                storageRef.child(auth.currentUser!!.uid).downloadUrl.addOnSuccessListener { uri ->
+                storageRef.reference.child("Images")
+                    .child(auth.currentUser!!.uid).downloadUrl.addOnSuccessListener { uri ->
                     sharedPref.imageUri = uri.toString()
                     val user = User(
                         auth.currentUser!!.uid,

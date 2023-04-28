@@ -16,13 +16,10 @@ import ru.nurdaulet.news.util.Constants.currentSignInClient
 import javax.inject.Inject
 
 class AuthFirebase @Inject constructor(
-    private val sharedPref: SharedPref
-    //private val auth: FirebaseAuth,
-    // private val db: FirebaseFirestore
+    private val sharedPref: SharedPref,
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore
 ) {
-    // TODO(Inject these)
-    private val auth = FirebaseAuth.getInstance()
-    private val db = FirebaseFirestore.getInstance()
 
     fun signUp(
         email: String,
@@ -98,7 +95,13 @@ class AuthFirebase @Inject constructor(
         onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
-        val user = User(auth.currentUser!!.uid, username, auth.currentUser!!.email!!, "", sharedPref.country)
+        val user = User(
+            auth.currentUser!!.uid,
+            username,
+            auth.currentUser!!.email!!,
+            "",
+            sharedPref.country
+        )
         db.collection(FIREBASE_USERS).document(user.id).set(user)
             .addOnSuccessListener {
                 onSuccess.invoke()
@@ -112,9 +115,9 @@ class AuthFirebase @Inject constructor(
         onSuccess: () -> Unit,
         onFailure: (msg: String?) -> Unit
     ) {
-        //TODO (signOut value store. Maybe in shared pref?)
+        // TODO (signOut value store. Maybe in shared pref?)
         if (sharedPref.isSigned) {
-            //TODO (FirebaseAuth signOut listneres)
+            // TODO (FirebaseAuth signOut listneres)
             auth.signOut()
             sharedPref.apply {
                 username = ""

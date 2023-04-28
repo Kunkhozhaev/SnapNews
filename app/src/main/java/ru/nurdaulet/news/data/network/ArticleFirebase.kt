@@ -6,15 +6,13 @@ import ru.nurdaulet.news.domain.models.Article
 import ru.nurdaulet.news.domain.models.FirebaseArticle
 import ru.nurdaulet.news.domain.models.Source
 import ru.nurdaulet.news.util.Constants
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 class ArticleFirebase @Inject constructor(
-    //private val auth: FirebaseAuth,
-    // private val db: FirebaseFirestore
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore
 ) {
-    private val auth = FirebaseAuth.getInstance()
-    private val db = FirebaseFirestore.getInstance()
 
     fun saveArticleToDb(
         article: Article,
